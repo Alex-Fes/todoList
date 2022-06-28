@@ -64,8 +64,8 @@ function App() {
     })
 
     let [todolists, setTodolists] = useState<Array<TodolistType>>([
-        {id: v1(), title: 'What to learn', filter: 'Active'},
-        {id: v1(), title: 'What to buy', filter: 'Completed'}
+        {id:todolistId1, title: 'What to learn', filter: 'Active'},
+        {id: todolistId2, title: 'What to buy', filter: 'Completed'}
     ])
     return (
         <div className="App">
