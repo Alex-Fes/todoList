@@ -1,5 +1,6 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {filterValueType} from "./App";
+import {AddItemForm} from "./AddItemForm";
 
 type TaskType = {
     id: string
@@ -21,42 +22,24 @@ type PropsType = {
 
 
 export function Todolist(props: PropsType) {
-    const [newTaskTitle, setNewTaskTitle] = useState('');
-    const [error, setError] = useState<string | null>(null)
-    const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTaskTitle(e.currentTarget.value)
-    }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
-        if (e.charCode === 13) {
-            props.addTask(newTaskTitle, props.id);
-            setNewTaskTitle('')
-        }
-    }
-    const addTAsk = () => {
-        if (newTaskTitle.trim() !== '' && newTaskTitle.trim() !== 'censor') {
-            props.addTask(newTaskTitle.trim(), props.id);
-            setNewTaskTitle('');
-        } else {
-            setError('Title is required');
-        }
-    }
+
     const onAllClickHandler = () => props.changeFilter('All', props.id);
     const onActiveClickHandler = () => props.changeFilter('Active', props.id);
     const onCompletedClickHandler = () => props.changeFilter('Completed', props.id);
     const removeTodolist = () => {
         props.removeTodolist(props.id)
     }
+
+    const addTask = (title: string) => {
+
+        props.addTask(title, props.id)
+    }
+
     return <div>
         <h3>{props.title}
             <button onClick={removeTodolist}>x</button>
         </h3>
-        <div>
-            <input className={error ? 'error' : ''} value={newTaskTitle} onChange={onNewTitleChangeHandler}
-                   onKeyPress={onKeyPressHandler}/>
-            <button onClick={addTAsk}>+</button>
-            {error && <div className='error-message'>{error}</div>}
-        </div>
+        <AddItemForm addItem={addTask}/>
         <ul>
             {props.tasks.map(el => {
                 const onRemoveHandler = () => {
@@ -65,13 +48,11 @@ export function Todolist(props: PropsType) {
                 const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                     props.changeTaskStatus(el.id, e.currentTarget.checked, props.id)
                 }
-
-
                 return (
-                    <li key={el.id} className={el.isDone ? 'is-done' : ''}><input type="checkbox"
-                                                                                  onChange={onChangeHandler}
-                                                                                  checked={el.isDone}/>
-
+                    <li key={el.id} className={el.isDone ? 'is-done' : ''}>
+                        <input type="checkbox"
+                               onChange={onChangeHandler}
+                               checked={el.isDone}/>
                         <span>{el.title}</span>
                         <button onClick={onRemoveHandler}>x</button>
 
@@ -87,41 +68,6 @@ export function Todolist(props: PropsType) {
                     onClick={onCompletedClickHandler}>Completed
             </button>
         </div>
-    </div>
-}
-
-type AddItemFormPropsType = {
-    addTask: (title: string, todolistId: string) => void
-    id: string
-}
-
-function addItemForm(props: AddItemFormPropsType) {
-    const [newTaskTitle, setNewTaskTitle] = useState('');
-    const [error, setError] = useState<string | null>(null)
-    const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTaskTitle(e.currentTarget.value)
-    }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
-        if (e.charCode === 13) {
-            props.addTask(newTaskTitle, props.id);
-            setNewTaskTitle('')
-        }
-    }
-    const addTAsk = () => {
-        if (newTaskTitle.trim() !== '' && newTaskTitle.trim() !== 'censor') {
-            props.addTask(newTaskTitle.trim(), props.id);
-            setNewTaskTitle('');
-        } else {
-            setError('Title is required');
-        }
-    }
-
-    return <div>
-        <input className={error ? 'error' : ''} value={newTaskTitle} onChange={onNewTitleChangeHandler}
-               onKeyPress={onKeyPressHandler}/>
-        <button onClick={addTAsk}>+</button>
-        {error && <div className='error-message'>{error}</div>}
     </div>
 }
 
