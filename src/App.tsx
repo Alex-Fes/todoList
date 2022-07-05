@@ -11,8 +11,6 @@ type TodolistType = {
 }
 
 function App() {
-
-
     const removeTask = (taskId: string, todolistId: string) => {
         let task = tasks1[todolistId];
         let filteredTask = task.filter(el => el.id !== taskId);
@@ -77,8 +75,8 @@ function App() {
 
     return (
         <div className="App">
-            {
-                todolists.map((tl) => {
+            <input/> <button>x</button>
+            {todolists.map((tl) => {
                     let filteredTasks = tasks1[tl.id];
                     if (tl.filter === 'Completed') {
                         filteredTasks = filteredTasks.filter(el => el.isDone === true)
