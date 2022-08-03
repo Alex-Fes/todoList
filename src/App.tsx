@@ -12,7 +12,7 @@ export type TodolistType = {
     title: string
     filter: filterValueType
 }
-type TaskStateType = {
+export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
 
@@ -51,13 +51,6 @@ function App() {
         }
     }
 
-    function changeFilter(value: filterValueType, todolistId: string) {
-        let todolist = todolists.find(tl => tl.id === todolistId);
-        if (todolist) {
-            todolist.filter = value;
-            setTodolists([...todolists]);
-        }
-    }
 
     let todolistId1 = v1();
     let todolistId2 = v1();
@@ -67,12 +60,6 @@ function App() {
     ])
 
 
-    let removeTodolist = (todolistId: string) => {
-        let filteredTodolist = todolists.filter(tl => tl.id !== todolistId);
-        setTodolists(filteredTodolist);
-        delete tasks1[todolistId];
-        setTasks1({...tasks1})
-    }
     let [tasks1, setTasks1] = useState<TaskStateType>({
         [todolistId1]: [
             {id: v1(), title: "HTML", isDone: true},
@@ -87,6 +74,7 @@ function App() {
             {id: v1(), title: "Pen", isDone: false}
         ]
     })
+
     function addtodoList(title: string) {
         let todolist: TodolistType = {
             id: v1(),
@@ -96,6 +84,22 @@ function App() {
         setTodolists([todolist, ...todolists])
         setTasks1({...tasks1, [todolist.id]: []})
     }
+
+    let removeTodolist = (todolistId: string) => {
+        let filteredTodolist = todolists.filter(tl => tl.id !== todolistId);
+        setTodolists(filteredTodolist);
+        delete tasks1[todolistId];
+        setTasks1({...tasks1})
+    }
+
+    function changeFilter(value: filterValueType, todolistId: string) {
+        let todolist = todolists.find(tl => tl.id === todolistId);
+        if (todolist) {
+            todolist.filter = value;
+            setTodolists([...todolists]);
+        }
+    }
+
     function changeTodoListTitle(newTitle: string, id: string) {
         let todolist = todolists.find(tl => tl.id === id)
         if (todolist) {
@@ -103,6 +107,7 @@ function App() {
             setTodolists([...todolists])
         }
     }
+
 
     return (
         <div className="App">
@@ -132,21 +137,21 @@ function App() {
                         }
                         return <Grid item>
                             <Paper style={{padding: '10px'}}>
-                            <Todolist
-                                key={tl.id}
-                                id={tl.id}
-                                title={tl.title}
-                                tasks={filteredTasks}
-                                removeTask={removeTask}
-                                changeFilter={changeFilter}
-                                addTask={addTask}
-                                changeTaskStatus={changeStatus}
-                                changeTaskTitle={changeTaskTitle}
-                                filter={tl.filter}
-                                removeTodolist={removeTodolist}
-                                changeTodoListTitle={changeTodoListTitle}
-                            />
-                                </Paper>
+                                <Todolist
+                                    key={tl.id}
+                                    id={tl.id}
+                                    title={tl.title}
+                                    tasks={filteredTasks}
+                                    removeTask={removeTask}
+                                    changeFilter={changeFilter}
+                                    addTask={addTask}
+                                    changeTaskStatus={changeStatus}
+                                    changeTaskTitle={changeTaskTitle}
+                                    filter={tl.filter}
+                                    removeTodolist={removeTodolist}
+                                    changeTodoListTitle={changeTodoListTitle}
+                                />
+                            </Paper>
                         </Grid>
                     })
                     }
