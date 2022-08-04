@@ -29,8 +29,8 @@ type ActionType =
     | AddTasksActionType
     | ChangeTasksTitleActionType
     | ChangeStatusActionType
-    |AddTodolistActionType
-    |removeTodolistActionType;
+    | AddTodolistActionType
+    | removeTodolistActionType;
 
 export const taskReduser = (state: TaskStateType, action: ActionType): TaskStateType => {
     switch (action.type) {
@@ -55,17 +55,19 @@ export const taskReduser = (state: TaskStateType, action: ActionType): TaskState
             let task = tasks.find(t => t.id === action.id);
             if (task) {
                 task.isDone = action.isDone
-            };
-           // copyState[action.todolistId] = tasks;
+            }
+            ;
+            // copyState[action.todolistId] = tasks;
             return copyState;
         }
         case 'CHANGE-TASKS-TITLE': {
             let copyState = {...state}
             let tasks = state[action.todolistId];
             let task = tasks.find(t => t.id === action.id);
-            if(task) {
+            if (task) {
                 task.title = action.title
-            };
+            }
+            ;
             //copyState[action.todolistId] = tasks;
             return copyState;
         }
@@ -74,11 +76,11 @@ export const taskReduser = (state: TaskStateType, action: ActionType): TaskState
             copyState[action.todolistId] = [];
             return copyState;
         }
-            case 'REMOVE-TODOLIST': {
-                let copyState = {...state};
-                delete copyState[action.id];
-                return copyState;
-            }
+        case 'REMOVE-TODOLIST': {
+            let copyState = {...state};
+            delete copyState[action.id];
+            return copyState;
+        }
         default:
             throw new Error("I don't understand this action type");
     }
