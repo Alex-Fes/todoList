@@ -106,7 +106,7 @@ test('new property with new array should be add when new todolist is add', () =>
     const action = addTodolistAC('title no matter');
     const endState = taskReduser(startState, action);
 
-    const keys = Object.keys(endState)
+    const keys = Object.keys(endState)// возвращает объект в виде строк всех ключей в ассоц массиве
     const newKey = keys.find(k => k != 'todolistId1' && k != 'todolistId2');
     if(!newKey){
         throw Error('new key should be add')
