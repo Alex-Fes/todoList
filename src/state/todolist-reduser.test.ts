@@ -29,7 +29,7 @@ test('correct todolist should be add', () => {
         {id: todolistId2, title: 'What to buy', filter: 'All'}];
     const endState = todolistsReduser(startState, addTodolistAC(newTodolistTitle));
     expect(endState.length).toBe(3);
-    expect(endState[2].title).toBe(newTodolistTitle);
+    expect(endState[0].title).toBe(newTodolistTitle);
 })
 
 test('correct todolist should change title', () => {
@@ -39,7 +39,7 @@ test('correct todolist should change title', () => {
     let startState: Array<TodolistType> = [
         {id: todolistId1, title: 'What to learn', filter: 'All'},
         {id: todolistId2, title: 'What to buy', filter: 'All'}];
-    let action = changeTodolistTitleAC(todolistId2, newTodolistTitle)
+    let action = changeTodolistTitleAC(newTodolistTitle, todolistId2)
     const endState = todolistsReduser(startState, action);
     expect(endState.length).toBe(2);
     expect(endState[1].title).toBe(newTodolistTitle);
@@ -53,7 +53,7 @@ test('correct filter of todolist should be change ', () => {
     let startState: Array<TodolistType> = [
         {id: todolistId1, title: 'What to learn', filter: 'All'},
         {id: todolistId2, title: 'What to buy', filter: 'All'}];
-    let action: ChangeTodolistFilterActionType = changeTodolistFilterAC(todolistId2,newFilter)
+    let action: ChangeTodolistFilterActionType = changeTodolistFilterAC(newFilter,todolistId2)
 
     const endState = todolistsReduser(startState, action);
     expect(endState.length).toBe(2);
