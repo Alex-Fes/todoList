@@ -65,26 +65,30 @@ export const taskReduser = (state: TaskStateType = innitialState, action: Action
             return copyState;
         }
         case 'CHANGE-TASKS-STATUS': {
-            let copyState = {...state};
             let tasks = state[action.todolistId];
-            let task = tasks.find(t => t.id === action.id);
-            if (task) {
-                task.isDone = action.isDone
-            }
-            ;
-            // copyState[action.todolistId] = tasks;
-            return copyState;
+            state[action.todolistId] = tasks.map(t => t.id === action.id ?
+                {...t, isDone: action.isDone}
+                : t);
+            // let task = tasks.find(t => t.id === action.id);
+            // if (task) {
+            //     let newTask = {...task, isDone: action.isDone}
+            //     //task.isDone = action.isDone
+            // };
+            //  copyState[action.todolistId] = [...tasks];
+            return ({...state});
         }
         case 'CHANGE-TASKS-TITLE': {
-            let copyState = {...state}
             let tasks = state[action.todolistId];
-            let task = tasks.find(t => t.id === action.id);
-            if (task) {
-                task.title = action.title
-            }
-            ;
-            //copyState[action.todolistId] = tasks;
-            return copyState;
+            state[action.todolistId] = tasks.map(t => t.id === action.id ?
+                    {...t, title: action.title}
+                : t);
+
+            // let task = tasks.find(t => t.id === action.id);
+            // if (task) {
+            //     task.title = action.title
+            // };
+            // copyState[action.todolistId] = [...tasks];
+            return ({...state});
         }
         case 'ADD-TODOLIST': {
             let copyState = {...state};

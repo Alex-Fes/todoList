@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {AddItemForm} from "./AddItemForm";
@@ -20,47 +20,40 @@ export type TaskStateType = {
 }
 
 function AppWithRedux() {
+    console.log('App was called');
+    const dispatch = useDispatch();
+    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists);
+    const tasks1 = useSelector<AppRootStateType, TaskStateType>(state => state.tasks);
 
-    const dispatch = useDispatch()
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
-    const tasks1 = useSelector<AppRootStateType, TaskStateType>(state => state.tasks)
-
-    const removeTask = (taskId: string, todolistId: string) => {
-        const action = removeTaskAC(taskId, todolistId)
-        dispatch(action)
-    }
-
-    function addTask(title: string, todolistId: string) {
-        const action = addTaskAC(title, todolistId)
-        dispatch(action)
-    }
-
-    function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
-        dispatch(changeStatusAC(taskId, isDone, todolistId))
-    }
-
-    function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
+    const removeTask = useCallback((taskId: string, todolistId: string) => {
+        const action = removeTaskAC(taskId, todolistId);
+        dispatch(action);
+    }, [dispatch]);
+    const addTask = useCallback((title: string, todolistId: string) => {
+        const action = addTaskAC(title, todolistId);
+        dispatch(action);
+    }, [dispatch]);
+    const changeStatus = useCallback((taskId: string, isDone: boolean, todolistId: string) => {
+        dispatch(changeStatusAC(taskId, isDone, todolistId));
+    }, [dispatch]);
+    const changeTaskTitle = useCallback((taskId: string, newTitle: string, todolistId: string) => {
         // const action = changeTaskTitleAC(taskId, newTitle, todolistId)
-        dispatch(changeTaskTitleAC(taskId, newTitle, todolistId))
-    }
-
-    function addTodoList(title: string) {
-        const action = addTodolistAC(title)
-        dispatch(action)
-    }
-
-    let removeTodolist = (todolistId: string) => {
-        const action = removeTodolistAC(todolistId)
-        dispatch(action)
-    }
-
-    function changeFilter(value: filterValueType, todolistId: string) {
-        dispatch(changeTodolistFilterAC(value, todolistId))
-    }
-
-    function changeTodoListTitle(newTitle: string, id: string) {
-        dispatch(changeTodolistTitleAC(newTitle, id))
-    }
+        dispatch(changeTaskTitleAC(taskId, newTitle, todolistId));
+    }, [dispatch]);
+    const addTodoList = useCallback((title: string) => {
+        const action = addTodolistAC(title);
+        dispatch(action);
+    }, [dispatch]);
+    const removeTodolist = useCallback((todolistId: string) => {
+        const action = removeTodolistAC(todolistId);
+        dispatch(action);
+    }, [dispatch]);
+    const changeFilter = useCallback((value: filterValueType, todolistId: string) => {
+        dispatch(changeTodolistFilterAC(value, todolistId));
+    }, [dispatch]);
+    const changeTodoListTitle = useCallback((newTitle: string, id: string) => {
+        dispatch(changeTodolistTitleAC(newTitle, id));
+    }, [dispatch]);
 
     return (
         <div className="App">
@@ -82,12 +75,7 @@ function AppWithRedux() {
                 <Grid container spacing={3}>
                     {todolists.map((tl) => {
                         let filteredTasks = tasks1[tl.id];
-                        if (tl.filter === 'Completed') {
-                            filteredTasks = filteredTasks.filter(el => el.isDone === true)
-                        }
-                        if (tl.filter === 'Active') {
-                            filteredTasks = filteredTasks.filter(el => el.isDone === false)
-                        }
+
                         return <Grid item>
                             <Paper style={{padding: '10px'}}>
                                 <Todolist
