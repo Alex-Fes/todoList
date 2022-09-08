@@ -51,7 +51,7 @@ export const todolistsReduser = (state: Array<TodolistType> = initialState, acti
             if (todolist) {
                 todolist.title = action.title;
             }
-            return [...state]
+            return [...state, ]
         }
         case 'CHANGE-TODOLIST-FILTER': {
             // let tasks = state[action.todolistId];
@@ -69,8 +69,9 @@ export const todolistsReduser = (state: Array<TodolistType> = initialState, acti
 
             let todolist = state.find(tl => tl.id === action.id);
             if (todolist) {
-                todolist.filter = action.filter;
+                todolist.filter = action.filter
             }
+
             return [...state]
         }
         default:
