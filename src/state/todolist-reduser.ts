@@ -65,8 +65,6 @@ export const todolistsReduser = (state: Array<TodolistType> = initialState, acti
 
              // state.map(tl => tl.id === action.id ? tl.filter = action.filter : tl);
 
-
-
             let todolist = state.find(tl => tl.id === action.id);
             if (todolist) {
                 todolist.filter = action.filter
