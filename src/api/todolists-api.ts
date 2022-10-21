@@ -1,4 +1,5 @@
 import axios from "axios";
+import {number} from "prop-types";
 
 export const instance = axios.create({
     withCredentials: true,
@@ -8,18 +9,83 @@ export const instance = axios.create({
     }
 })
 
+export type TodolistType = {
+    id: string
+    title: string
+    addedDate: string
+    order: number
+}
+
+// type CreateTodolistResponseType = {
+//     resultCode: number
+//     messages: Array<string>
+//     data: {
+//         item: TodolistType
+//     }
+// }
+// type DeleteTodolistType = {
+//     resultCode: number
+//     messages: Array<string>
+//     data: {}
+// }
+// type UpdateTodolistType = {
+//     resultCode: number
+//     messages: Array<string>
+//     data: {}
+// }
+
+type ResponseType<D = {}> = {
+    resultCode: number
+    messages: Array<string>
+    data: D
+}
+
+export type TaskType = {
+    description: string
+    title: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+export type UpdateTaskModelType = {
+    title: string
+    description: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+}
+
+type GetTasksResponseType = {
+    error: string | null
+    totalCount: number
+    items: Array<TaskType>
+}
 
 export const todolistsAPI = {
     getTodolists() {
-        return instance.get('todo-lists')
+        return instance.get<TodolistType[]>('todo-lists')
     },
-    createTodolist () {
-       return  instance.post('todo-lists', {title: 'Alex todolist'})
+    createTodolist(title: string) {
+        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title})
     },
-    updateTodolist () {
-       return  instance.put('todo-lists/00646965-2d5b-402b-998d-db6815a9e64b', {title: 'Yo yo to mayo'})
+    updateTodolist(id: string, title: string) {
+        return instance.put<ResponseType>(`todo-lists/${id}`, {title: title})
     },
-    deleteTodolist () {
-       return  instance.delete('todo-lists/42081fe7-0396-4b52-846a-00ad8c8e4c92')
+    deleteTodolist(id: string) {
+        return instance.delete<ResponseType>(`todo-lists/${id}`)
+    },
+    getTasks(todolistId: string) {
+        return instance.get<GetTasksResponseType>(`todo-lists/${todolistId}/tasks`)
+    },
+    deleteTask(todolistId: string, taskId: string) {
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     }
 }
