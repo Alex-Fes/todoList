@@ -1,14 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {todolistsAPI} from "../api/todolists-api";
-import {number} from "prop-types";
 
 
 export default {
     title: 'API'
 }
-// const settings = {
-//     withCredentials: true
-// }
 
 
 export const GetTodolists = () => {
@@ -112,10 +108,10 @@ export const GetTasks = () => {
         </div>
     </div>
 }
-export const DeleteTasks = () => {
+export const DeleteTask = () => {
     const [state, setState] = useState<any>(null)
-    const [todolistId, setTodolistId] = useState<string>('')
-    const [taskId, setTaskId] = useState<string>('')
+    const [todolistId, setTodolistId] = useState<string>("")
+    const [taskId, setTaskId] = useState<string>("")
 
     const deleteTask = () => {
         todolistsAPI.deleteTask(todolistId, taskId)
@@ -123,6 +119,7 @@ export const DeleteTasks = () => {
                 setState(res.data)
             })
     }
+
     return <div>{JSON.stringify(state)}
         <div>
             <input placeholder={'todolistId'} value={todolistId} onChange={(e) => {
@@ -136,18 +133,27 @@ export const DeleteTasks = () => {
     </div>
 }
 
-export const UpdateTasks = () => {
+export const UpdateTask = () => {
     const [state, setState] = useState<any>(null)
     const [todolistId, setTodolistId] = useState<string>('')
     const [taskId, setTaskId] = useState<string>('')
     const [title, setTitle] = useState<string>('')
+    const [description, setDescription] = useState<string>('')
+    const [status, setStatus] = useState<number>(0)
+    const [priority, setPriority] = useState<number>(0)
+    const [startDate, setStartDate] = useState<string>('')
+    const [deadline, setDeadline] = useState<string>('')
 
     const updateTask = () => {
 
-        const model = {
-          title: title
-      }
-        todolistsAPI.updateTask(todolistId, taskId, title)
+        todolistsAPI.updateTask(todolistId, taskId, {
+            deadline: '',
+            description: description,
+            priority: priority,
+            startDate: '',
+            status: status,
+            title: title
+        })
             .then((res) => {
                 setState(res.data)
             })
@@ -162,6 +168,21 @@ export const UpdateTasks = () => {
             }}/>
             <input placeholder={'title'} value={title} onChange={(e) => {
                 setTitle(e.currentTarget.value)
+            }}/>
+            <input placeholder={'Description'} value={description} onChange={(e) => {
+                setDescription(e.currentTarget.value)
+            }}/>
+            <input placeholder={'status'} value={status} onChange={(e) => {
+                setStatus(+e.currentTarget.value)
+            }}/>
+            <input placeholder={'priority'} value={priority} onChange={(e) => {
+                setPriority(+e.currentTarget.value)
+            }}/>
+            <input placeholder={'startDate'} value={startDate} onChange={(e) => {
+                setStartDate(e.currentTarget.value)
+            }}/>
+            <input placeholder={'deadline'} value={deadline} onChange={(e) => {
+                setDeadline(e.currentTarget.value)
             }}/>
             <button onClick={updateTask}> Update task</button>
         </div>

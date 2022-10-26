@@ -1,9 +1,8 @@
 import axios from "axios";
-import {number} from "prop-types";
 
 export const instance = axios.create({
     withCredentials: true,
-    baseURL: 'https://social-network.samuraijs.com/api/1.0/',
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     headers: {
         'API-KEY': '3af1a50e-9363-4d90-80ea-b72e392fafcb'
     }
@@ -56,7 +55,7 @@ export type TaskType = {
 export type UpdateTaskModelType = {
     title: string
     description: string
-    completed: boolean
+    //completed: boolean
     status: number
     priority: number
     startDate: string
@@ -92,6 +91,6 @@ export const todolistsAPI = {
         return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`,model )
     },
     createTask(todolistId: string, title: string) {
-        return instance.post<GetTasksResponseType>(`todo-lists/${todolistId}/tasks`, {title: title})
+        return instance.post<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks`, {title: title})
     }
 }
