@@ -1,6 +1,8 @@
-import {TaskStateType} from "../App";
 import {v1} from "uuid";
 import {AddTodolistActionType, removeTodolistActionType, todolistId1, todolistId2} from "./todolist-reduser";
+import {TaskPriority, TaskStatuses} from "../api/todolists-api";
+import {TaskStateType} from "../App";
+
 
 type removeTasksActionType = {
     type: 'REMOVE-TASKS'
@@ -21,7 +23,7 @@ type ChangeTasksTitleActionType = {
 export type ChangeStatusActionType = {
     type: 'CHANGE-TASKS-STATUS'
     id: string
-    isDone: boolean
+    status: TaskStatuses
     todolistId: string
 }
 type ActionType =
@@ -32,20 +34,8 @@ type ActionType =
     | AddTodolistActionType
     | removeTodolistActionType;
 
-const innitialState: TaskStateType = {
-    [todolistId1]: [
-        {id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Redux", isDone: false},
-        {id: v1(), title: "CSS", isDone: false}
-    ],
-    [todolistId2]: [
-        {id: v1(), title: "Book", isDone: true},
-        {id: v1(), title: "Map", isDone: true},
-        {id: v1(), title: "Pen", isDone: false}
-    ]
-}
+const innitialState: TaskStateType = {}
+
 
 export const taskReduser = (state: TaskStateType = innitialState, action: ActionType): TaskStateType => {
     switch (action.type) {
@@ -58,7 +48,8 @@ export const taskReduser = (state: TaskStateType = innitialState, action: Action
         }
         case 'ADD-TASKS': {
             let copyState = {...state};
-            let newTask = {id: v1(), title: action.title, isDone: false};
+            let newTask = {id: v1(), title: action.title, status: TaskStatuses.New, todoListId: action.todolistId,
+                startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''};
             let task = state[action.todolistId];
             let newTasks = [newTask, ...task];
             copyState[action.todolistId] = newTasks;
@@ -67,7 +58,7 @@ export const taskReduser = (state: TaskStateType = innitialState, action: Action
         case 'CHANGE-TASKS-STATUS': {
             let tasks = state[action.todolistId];
             state[action.todolistId] = tasks.map(t => t.id === action.id ?
-                {...t, isDone: action.isDone}
+                {...t, status: action.status}
                 : t);
             // let task = tasks.find(t => t.id === action.id);
             // if (task) {
@@ -80,7 +71,7 @@ export const taskReduser = (state: TaskStateType = innitialState, action: Action
         case 'CHANGE-TASKS-TITLE': {
             let tasks = state[action.todolistId];
             state[action.todolistId] = tasks.map(t => t.id === action.id ?
-                    {...t, title: action.title}
+                {...t, title: action.title}
                 : t);
 
             // let task = tasks.find(t => t.id === action.id);
@@ -113,6 +104,6 @@ export const addTaskAC = (title: string, todolistId: string): AddTasksActionType
 export const changeTaskTitleAC = (id: string, title: string, todolistId: string): ChangeTasksTitleActionType => {
     return {type: 'CHANGE-TASKS-TITLE', id, title, todolistId}
 }
-export const changeStatusAC = (id: string, isDone: boolean, todolistId: string): ChangeStatusActionType => {
-    return {type: 'CHANGE-TASKS-STATUS', id, isDone, todolistId}
+export const changeStatusAC = (id: string, status: TaskStatuses, todolistId: string): ChangeStatusActionType => {
+    return {type: 'CHANGE-TASKS-STATUS', id, status, todolistId}
 }

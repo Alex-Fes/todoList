@@ -39,12 +39,26 @@ type ResponseType<D = {}> = {
     data: D
 }
 
+export enum TaskStatuses {
+    New ,
+    InProgress,
+    Completed,
+    Draft
+}
+export enum TaskPriority {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+}
+
 export type TaskType = {
     description: string
     title: string
-    completed: boolean
-    status: number
-    priority: number
+    //completed: boolean
+    status: TaskStatuses
+    priority: TaskPriority
     startDate: string
     deadline: string
     id: string
