@@ -1,7 +1,28 @@
 import {TaskStateType} from "../App";
-import {addTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC, taskReduser} from "./tasks-reduser";
-import {addTodolistAC, removeTodolistAC, todolistId1} from "./todolist-reduser";
+import {addTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC, setTasksAC, taskReduser} from "./tasks-reduser";
+import {addTodolistAC, removeTodolistAC, setTodolistsAC, todolistId1} from "./todolist-reduser";
 import {TaskPriority, TaskStatuses} from "../api/todolists-api";
+
+const startState: TaskStateType = {
+    'todolistId1': [
+        {id: '1', title: "HTML", status: TaskStatuses.Completed, todoListId: 'todolistId1',
+            startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''},
+        {id: '2', title: "JS",  status: TaskStatuses.Completed, todoListId: 'todolistId1',
+            startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''},
+        {id: '3', title: "ReactJS",  status: TaskStatuses.New, todoListId: 'todolistId1',
+            startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''}
+    ],
+    'todolistId2': [
+        {id: '1', title: "Book",  status: TaskStatuses.Completed, todoListId: 'todolistId2',
+            startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''},
+        {id: '2', title: "Map", status: TaskStatuses.Completed, todoListId: 'todolistId2',
+            startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''},
+        {id: '3', title: "Pen", status: TaskStatuses.New, todoListId: 'todolistId2',
+            startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''}
+    ]
+}
+
+
 
 test('correct task should be delete from correct array', () => {
     const startState: TaskStateType = {
@@ -147,7 +168,7 @@ test('new property with new array should be add when new todolist is add', () =>
 })
 
 test('property with todolistId should be delete', () => {
-    const startState: TaskStateType =  {
+  const startState: TaskStateType =  {
         'todolistId1': [
             {id: '1', title: "HTML", status: TaskStatuses.Completed, todoListId: 'todolistId1',
                 startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''},
@@ -173,3 +194,35 @@ test('property with todolistId should be delete', () => {
     expect(keys.length).toBe(1)
     expect(endState['todolistId2']).toBeUndefined()
 })
+
+test('empty array should be added when we set todolists', () => {
+
+    const action = setTodolistsAC([
+        {id: 'todolistId1', title: 'What to learn', addedDate: '', order: 0},
+        {id: 'todolistId2', title: 'What to buy' , addedDate: '', order: 0}]);
+    const endState = taskReduser({}, action);
+
+    const keys = Object.keys(endState)
+
+    expect(keys.length).toBe(2)
+    expect(endState['todolistId2']).toStrictEqual([])
+    expect(endState['todolistId1']).toStrictEqual([])
+})
+
+test('tasks should be added for todolist', () => {
+
+    const action = setTasksAC(startState['todolistId1'], 'todolistId1');
+    const endState = taskReduser({
+        'todolistId2': [],
+        'todolistId1': []
+    }, action);
+
+
+
+    expect(endState['todolistId1'].length).toBe(3)
+    expect(endState['todolistId2'].length).toBe(0)
+
+})
+
+
+
