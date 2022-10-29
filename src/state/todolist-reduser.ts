@@ -73,6 +73,7 @@ export const todolistsReduser = (state: Array<TodolistDomainType> = initialState
             const todolist = state.find(tl => tl.id === action.id);
             if (todolist) {
                 todolist.filter = action.filter
+
             }
             return [...state]
         }

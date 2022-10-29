@@ -84,6 +84,12 @@ function AppWithRedux() {
                 <Grid container spacing={3}>
                     {todolists.map((tl) => {
                         let filteredTasks = tasks1[tl.id];
+                        // if (props.filter === 'Completed') {
+                        //     filteredTasks = props.tasks.filter(el => el.status === TaskStatuses.New)
+                        // }
+                        // if (props.filter === 'Active') {
+                        //     filteredTasks = props.tasks.filter(el => el.status === TaskStatuses.Completed)
+                        // }
 
                         return <Grid item>
                             <Paper style={{padding: '10px'}}>
