@@ -1,7 +1,8 @@
 import {TaskStateType} from "../App";
-import {addTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC, setTasksAC, taskReduser} from "./tasks-reduser";
+import {addTaskAC, updateTaskAC, changeTaskTitleAC, removeTaskAC, setTasksAC, taskReduser} from "./tasks-reduser";
 import {addTodolistAC, removeTodolistAC, setTodolistsAC, todolistId1} from "./todolist-reduser";
 import {TaskPriority, TaskStatuses} from "../api/todolists-api";
+import {v1} from "uuid";
 
 const startState: TaskStateType = {
     'todolistId1': [
@@ -73,7 +74,22 @@ test('correct task should be add from correct array', () => {
                 startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''}
         ]
     }
-    const action = addTaskAC('CSS', 'todolistId1');
+    //const action = addTaskAC('CSS', 'todolistId1');
+
+    const action = addTaskAC({
+        id: "qwerty",
+        todoListId: 'todolistId1',
+        startDate: '',
+        order: 0,
+        priority: 0,
+        status: TaskStatuses.New,
+        title: 'CSS',
+        addedDate: '',
+        deadline: '',
+        description: ''
+    });
+
+
     const endState = taskReduser(startState, action);
 
     expect(endState['todolistId1'].length).toBe(4);
@@ -103,7 +119,7 @@ test('status of specified task should be changed', () => {
                 startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''}
         ]
     }
-    const action = changeStatusAC('2', TaskStatuses.New, 'todolistId2');
+    const action = updateTaskAC('2', {status: TaskStatuses.New}, 'todolistId2');
     const endState = taskReduser(startState, action);
 
     expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed);
@@ -129,7 +145,7 @@ test('title of specified task should be changed', () => {
                 startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''}
         ]
     }
-    const action = changeTaskTitleAC('2', 'Cards', 'todolistId2');
+    const action = updateTaskAC('2', {title: 'Cards'}, 'todolistId2');
     const endState = taskReduser(startState, action);
 
     expect(endState['todolistId1'][1].title).toBe("JS");
@@ -155,7 +171,12 @@ test('new property with new array should be add when new todolist is add', () =>
                 startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''}
         ]
     }
-    const action = addTodolistAC('title no matter');
+    const action = addTodolistAC({
+        id: v1(),
+        addedDate: '',
+        order: 0,
+        title: 'new todolist'
+    });
     const endState = taskReduser(startState, action);
 
     const keys = Object.keys(endState)// возвращает объект в виде строк всех ключей в ассоц массиве

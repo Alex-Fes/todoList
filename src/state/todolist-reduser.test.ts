@@ -10,6 +10,7 @@ import {
     TodolistDomainType,
     todolistsReduser
 } from "./todolist-reduser";
+import {TodolistType} from "../api/todolists-api";
 
 
 test('correct todolist should be delete', () => {
@@ -32,7 +33,12 @@ test('correct todolist should be delete', () => {
 test('correct todolist should be add', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();
-    let newTodolistTitle = 'New Todolist';
+    let newTodolistTitle: TodolistType = {
+        title: 'New Todolist',
+        id: 'any id',
+        order: 0,
+        addedDate: ''
+    };
     let startState: Array<TodolistDomainType> = [
         {
             id: todolistId1, title: 'What to learn', filter: 'All', addedDate: '',

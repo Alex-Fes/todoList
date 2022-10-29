@@ -5,7 +5,7 @@ import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@material-ui/icons";
-import {addTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC, taskReduser} from "./state/tasks-reduser";
+import {addTaskAC, updateTaskAC, changeTaskTitleAC, removeTaskAC, taskReduser} from "./state/tasks-reduser";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
@@ -27,13 +27,25 @@ function AppWithRedusers() {
     }
 
     function addTask(title: string, todolistId: string) {
-        const action = addTaskAC(title, todolistId)
+        const action = addTaskAC({
+                id: "qwerty",
+                todoListId: todolistId,
+                startDate: '',
+                order: 0,
+                priority: 0,
+                status: TaskStatuses.New,
+                title: title,
+                addedDate: '',
+                deadline: '',
+                description: ''
+            }
+        )
         dispatchToTasksReduser(action)
     }
 
     function changeStatus(taskId: string, status: TaskStatuses, todolistId: string) {
 
-        dispatchToTasksReduser(changeStatusAC(taskId, status, todolistId))
+        dispatchToTasksReduser(updateTaskAC(taskId, {status}, todolistId))
     }
 
     function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
@@ -96,7 +108,12 @@ function AppWithRedusers() {
     })
 
     function addTodoList(title: string) {
-        const action = addTodolistAC(title)
+        const action = addTodolistAC({
+            id: v1(),
+            addedDate: '',
+            order: 0,
+            title: title
+        })
         dispatchToTasksReduser(action)
         dispatchToTodolistReduser(action)
     }
@@ -137,10 +154,10 @@ function AppWithRedusers() {
                     {todolists.map((tl) => {
                         let filteredTasks = tasks1[tl.id];
                         if (tl.filter === 'Completed') {
-                            filteredTasks = filteredTasks.filter(el => el.status ===  TaskStatuses.Completed)
+                            filteredTasks = filteredTasks.filter(el => el.status === TaskStatuses.Completed)
                         }
                         if (tl.filter === 'Active') {
-                            filteredTasks = filteredTasks.filter(el => el.status ===  TaskStatuses.New)
+                            filteredTasks = filteredTasks.filter(el => el.status === TaskStatuses.New)
                         }
                         return <Grid item>
                             <Paper style={{padding: '10px'}}>
