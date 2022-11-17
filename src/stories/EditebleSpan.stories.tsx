@@ -1,6 +1,6 @@
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "../Components/AddItemForm";
 import {action} from "@storybook/addon-actions";
-import {EditebleSpan} from "./EditebleSpan";
+import {EditebleSpan} from "../Components/EditebleSpan";
 
 export default {
     title: 'EditableSpan Component',

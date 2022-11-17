@@ -34,7 +34,7 @@ test('correct todolist should be add', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();
     let newTodolistTitle: TodolistType = {
-        title: 'New Todolist',
+        title: 'New Task',
         id: 'any id',
         order: 0,
         addedDate: ''
@@ -56,7 +56,7 @@ test('correct todolist should be add', () => {
 test('correct todolist should change title', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();
-    let newTodolistTitle = 'New Todolist';
+    let newTodolistTitle = 'New Task';
     let startState: Array<TodolistDomainType> = [
         {
             id: todolistId1, title: 'What to learn', filter: 'All', addedDate: '',

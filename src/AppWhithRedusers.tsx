@@ -1,8 +1,8 @@
 import React, {useReducer} from 'react';
-import './App.css';
-import {Todolist} from './Todolist';
+import './app/App.css';
+import {Todolist} from './features/TodolistList/Todolist';
 import {v1} from "uuid";
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "./Components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@material-ui/icons";
 import {addTaskAC, updateTaskAC, changeTaskTitleAC, removeTaskAC, taskReduser} from "./state/tasks-reduser";

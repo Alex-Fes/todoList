@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {Todolist} from './Todolist';
-import {AddItemForm} from "./AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {Todolist} from '../features/TodolistList/Todolist';
+import {AddItemForm} from "../Components/AddItemForm";
+import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@material-ui/icons";
-import {addTaskTC, removeTaskTC, updateTaskTC} from "./state/tasks-reduser";
+import {addTaskTC, removeTaskTC, updateTaskTC} from "../state/tasks-reduser";
 import {
     addTodolistTC,
     changeTodolistFilterAC,
@@ -13,10 +13,11 @@ import {
     filterValueType,
     removeTodolistTC,
     TodolistDomainType
-} from "./state/todolist-reduser";
+} from "../state/todolist-reduser";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
-import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {AppRootStateType} from "../state/store";
+import {TaskStatuses, TaskType} from "../api/todolists-api";
+import {ErrorSnackBar} from "../Components/ErrorSnackBar/ErrorSnackBar";
 
 
 export type TaskStateType = {
@@ -76,7 +77,10 @@ function AppWithRedux() {
                     </Typography>
                     <Button color='inherit'>Login</Button>
                 </Toolbar>
+                <LinearProgress />
+                <ErrorSnackBar/>
             </AppBar>
+
             <Container fixed>
                 <Grid container style={{padding: '10px'}}>
                     <AddItemForm addItem={addTodoList}/>

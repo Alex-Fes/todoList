@@ -1,6 +1,6 @@
 import {action} from "@storybook/addon-actions";
-import {Task} from "./Task";
-import {TaskPriority, TaskStatuses} from "./api/todolists-api";
+import {Task} from "../features/Task/Task";
+import {TaskPriority, TaskStatuses} from "../api/todolists-api";
 
 export default {
     title: 'Task Component',

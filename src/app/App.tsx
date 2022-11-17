@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from './Todolist';
+import {Todolist} from '../features/TodolistList/Todolist';
 import {v1} from "uuid";
-import {AddItemForm} from "./AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {AddItemForm} from "../Components/AddItemForm";
+import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@material-ui/icons";
-import {TaskPriority, TaskStatuses, TaskType} from "./api/todolists-api";
-import {filterValueType, TodolistDomainType} from "./state/todolist-reduser";
+import {TaskPriority, TaskStatuses, TaskType} from "../api/todolists-api";
+import {filterValueType, TodolistDomainType} from "../state/todolist-reduser";
 
 
 export type TaskStateType = {
@@ -153,6 +153,7 @@ function App() {
                     </Typography>
                     <Button color='inherit'>Login</Button>
                 </Toolbar>
+                <LinearProgress />
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: '10px'}}>
