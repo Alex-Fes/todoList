@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {
     addTodolistTC,
@@ -15,12 +15,13 @@ import {TaskStatuses} from "../../api/todolists-api";
 import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../Components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
+import {useAppDispatch, useAppSelector} from "../../app/hooks/hooks";
 
 type TodolistsListPropsType = {}
 export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
-    const dispatch = useDispatch<any>();
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
-    const tasks1 = useSelector<AppRootStateType, TaskStateType>(state => state.tasks);
+    const dispatch = useAppDispatch();
+    const todolists = useAppSelector(state => state.todolists);
+    const tasks1 = useAppSelector(state => state.tasks);
 
     useEffect(() => {
         dispatch(fetchTodolistTC())

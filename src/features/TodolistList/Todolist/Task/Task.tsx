@@ -5,14 +5,14 @@ import {Delete} from "@material-ui/icons";
 import {TaskStatuses, TaskType} from "../../../../api/todolists-api";
 
 
-type TaskPropstype = {
+type TaskPropsType = {
     removeTask: (taskId: string, todolistId: string) => void
     changeTaskStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
     changeTaskTitle: (taskId: string, newValue: string, todolistId: string) => void
     task: TaskType
     todolistId: string
 }
-export const Task = React.memo((props: TaskPropstype) => {
+export const Task = React.memo((props: TaskPropsType) => {
     const onRemoveHandler = useCallback(() => {
         props.removeTask(props.task.id, props.todolistId)
     }, [props.removeTask, props.task.id, props.todolistId]);
