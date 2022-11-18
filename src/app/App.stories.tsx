@@ -1,14 +1,14 @@
-import AppWithRedux from "../app/AppWhithRedux";
-import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
+import App from "./App";
+import {ReduxStoreProviderDecorator} from "../stories/ReduxStoreProviderDecorator";
 
 export default {
     title: 'AppWithRedux Component',
-    component: AppWithRedux,
+    component: App,
     decorators: [ReduxStoreProviderDecorator]
 }
 
 export const AppWithReduxBaseExample = (props : any) => {
     return <>
-        <AppWithRedux/>
+        <App/>
     </>
 }

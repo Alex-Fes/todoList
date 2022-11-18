@@ -1,19 +1,20 @@
 import React, {useReducer} from 'react';
-import './app/App.css';
-import {Todolist} from './features/TodolistList/Todolist';
+import '../app/App.css';
+import {Todolist} from '../features/TodolistList/Todolist/Todolist';
 import {v1} from "uuid";
-import {AddItemForm} from "./Components/AddItemForm";
+import {AddItemForm} from "../Components/AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@material-ui/icons";
-import {addTaskAC, updateTaskAC, changeTaskTitleAC, removeTaskAC, taskReduser} from "./state/tasks-reduser";
+import {addTaskAC, removeTaskAC, taskReduser, updateTaskAC} from "../features/TodolistList/tasks-reduser";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, filterValueType,
+    changeTodolistTitleAC,
+    filterValueType,
     removeTodolistAC,
     todolistsReduser
-} from "./state/todolist-reduser";
-import {TaskPriority, TaskStatuses, TaskType} from "./api/todolists-api";
+} from "../features/TodolistList/todolist-reduser";
+import {TaskPriority, TaskStatuses, TaskType} from "../api/todolists-api";
 
 
 export type TaskStateType = {
@@ -50,7 +51,8 @@ function AppWithRedusers() {
 
     function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
         // const action = changeTaskTitleAC(taskId, newTitle, todolistId)
-        dispatchToTasksReduser(changeTaskTitleAC(taskId, newTitle, todolistId))
+        // @ts-ignore
+        dispatchToTasksReduser(updateTaskAC(taskId, newTitle, todolistId))
     }
 
 

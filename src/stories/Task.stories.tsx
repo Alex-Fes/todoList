@@ -1,5 +1,5 @@
 import {action} from "@storybook/addon-actions";
-import {Task} from "../features/Task/Task";
+import {Task} from "../features/TodolistList/Todolist/Task/Task";
 import {TaskPriority, TaskStatuses} from "../api/todolists-api";
 
 export default {

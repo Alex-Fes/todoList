@@ -3,14 +3,14 @@ import {v1} from "uuid";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    ChangeTodolistFilterActionType,
+
     changeTodolistTitleAC,
     filterValueType,
-    removeTodolistAC, setTodolistsAC,
+    removeTodolistAC, setTodolistsAC, TodolistActionType,
     TodolistDomainType,
     todolistsReduser
 } from "./todolist-reduser";
-import {TodolistType} from "../api/todolists-api";
+import {TodolistType} from "../../api/todolists-api";
 
 
 test('correct todolist should be delete', () => {
@@ -86,7 +86,7 @@ test('correct filter of todolist should be change ', () => {
             id: todolistId2, title: 'What to buy', filter: 'All', addedDate: '',
             order: 0
         }];
-    let action: ChangeTodolistFilterActionType = changeTodolistFilterAC(newFilter, todolistId2)
+    let action: TodolistActionType = changeTodolistFilterAC(newFilter, todolistId2)
 
     const endState = todolistsReduser(startState, action);
     expect(endState.length).toBe(2);
