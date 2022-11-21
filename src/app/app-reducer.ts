@@ -19,9 +19,9 @@ export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', 
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const);
 
 
-type SetErrorActionType = typeof setAppErrorAC;
-type SetStatusActionType = typeof setAppStatusAC;
-export type AppReducerActionsType = ReturnType<SetErrorActionType> | ReturnType<SetStatusActionType>;
+type SetAppErrorActionType = typeof setAppErrorAC;
+type SetAppStatusActionType = typeof setAppStatusAC;
+export type AppReducerActionsType = ReturnType<SetAppErrorActionType> | ReturnType<SetAppStatusActionType>;
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 export type RequestErrorType = string | null;
 export type InitialStateType = typeof initialState;

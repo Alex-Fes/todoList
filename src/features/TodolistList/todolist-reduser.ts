@@ -1,6 +1,7 @@
 import {todolistsAPI, TodolistType} from "../../api/todolists-api";
 import {AppThunkType} from "../../app/store";
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
+import {handleNetworkAppError} from "../../utils/error-utils";
 
 const initialState: Array<TodolistDomainType> = []
 
@@ -49,6 +50,7 @@ export const fetchTodolistTC = (): AppThunkType => (dispatch) => {
             dispatch(setTodolistsAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
         })
+        .catch(error => handleNetworkAppError(error, dispatch))
 }
 
 export const removeTodolistTC = (todolistId: string): AppThunkType => (dispatch) => {
@@ -58,6 +60,7 @@ export const removeTodolistTC = (todolistId: string): AppThunkType => (dispatch)
         .then(res => {dispatch(removeTodolistAC(todolistId))
             dispatch(setAppStatusAC('succeeded'))
             dispatch(changeTodolistEntityStatusAC(todolistId, 'succeeded'))})
+        .catch(error => handleNetworkAppError(error, dispatch))
 }
 
 export const addTodolistTC = (title: string): AppThunkType => (dispatch) => {
@@ -67,11 +70,13 @@ export const addTodolistTC = (title: string): AppThunkType => (dispatch) => {
             dispatch(addTodolistAC(res.data.data.item))
             dispatch(setAppStatusAC('succeeded'))
         })
+        .catch(error => handleNetworkAppError(error, dispatch))
 }
 
 export const changeTodolistTitleTC = (title: string, id: string): AppThunkType => (dispatch) => {
     todolistsAPI.updateTodolist(id, title)
         .then(res => dispatch(changeTodolistTitleAC(title, id)))
+        .catch(error => handleNetworkAppError(error, dispatch))
 }
 
 // types
