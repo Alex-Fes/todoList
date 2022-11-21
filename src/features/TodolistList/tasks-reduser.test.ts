@@ -3,6 +3,57 @@ import {addTaskAC, removeTaskAC, setTasksAC, taskReduser, updateTaskAC} from "./
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolist-reduser";
 import {TaskPriority, TaskStatuses} from "../../api/todolists-api";
 import {v1} from "uuid";
+import {AppRootStateType} from "../../app/store";
+
+
+
+let todolistId1 = v1();
+let todolistId2 = v1();
+const initialGlobalState: AppRootStateType = {
+    todolists: [
+        {
+            id: todolistId1, title: 'What to learn', filter: 'All', addedDate: '',
+            order: 0, entityStatus: 'idle'
+        },
+        {
+            id: todolistId2, title: 'What to buy', filter: 'All', addedDate: '',
+            order: 0, entityStatus: 'idle'
+        }],
+    tasks: {
+        ['todolistId1']: [
+            {
+                id: '1', title: "HTML", status: TaskStatuses.Completed, todoListId: 'todolistId1',
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+            },
+            {
+                id: '2', title: "JS", status: TaskStatuses.Completed, todoListId: 'todolistId1',
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+            },
+            {
+                id: '3', title: "ReactJS", status: TaskStatuses.New, todoListId: 'todolistId1',
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+            }
+        ],
+        ['todolistId2']: [
+            {
+                id: '1', title: "Book", status: TaskStatuses.Completed, todoListId: 'todolistId2',
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+            },
+            {
+                id: '2', title: "Map", status: TaskStatuses.Completed, todoListId: 'todolistId2',
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+            },
+            {
+                id: '3', title: "Pen", status: TaskStatuses.New, todoListId: 'todolistId2',
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+            }
+        ]
+    },
+    app: {
+        error: null,
+        status: 'idle'
+    }
+}
 
 const startState: TaskStateType = {
     'todolistId1': [

@@ -4,8 +4,10 @@ import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typograp
 import {Menu} from "@material-ui/icons";
 import {ErrorSnackBar} from "../Components/ErrorSnackBar/ErrorSnackBar";
 import {TodolistsList} from "../features/TodolistList/TodolistList";
+import {useAppSelector} from "./hooks/hooks";
 
 function App() {
+    const status = useAppSelector(state => state.app.status)
     return (
         <div className="App">
             <AppBar position={"static"}>
@@ -18,7 +20,7 @@ function App() {
                     </Typography>
                     <Button color='inherit'>Login</Button>
                 </Toolbar>
-                <LinearProgress/>
+                {status ==='loading' && <LinearProgress/>}
                 <ErrorSnackBar/>
             </AppBar>
             <Container fixed>
