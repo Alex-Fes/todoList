@@ -12,7 +12,7 @@ import {
     changeTodolistTitleAC,
     filterValueType,
     removeTodolistAC,
-    todolistsReduser
+    todolistsReducer
 } from "../features/TodolistList/todolist-reduser";
 import {TaskPriority, TaskStatuses, TaskType} from "../api/todolists-api";
 
@@ -58,7 +58,7 @@ function AppWithRedusers() {
 
     let todolistId1 = v1();
     let todolistId2 = v1();
-    let [todolists, dispatchToTodolistReduser] = useReducer(todolistsReduser, [
+    let [todolists, dispatchToTodolistReduser] = useReducer(todolistsReducer, [
         {
             id: todolistId1, title: 'What to learn', filter: 'All', addedDate: '',
             order: 0, entityStatus: 'idle'
@@ -165,15 +165,15 @@ function AppWithRedusers() {
                             <Paper style={{padding: '10px'}}>
                                 <Todolist
                                     key={tl.id}
-                                    id={tl.id}
-                                    title={tl.title}
+                                    todolist={tl}
+
                                     tasks={filteredTasks}
                                     removeTask={removeTask}
                                     changeFilter={changeFilter}
                                     addTask={addTask}
                                     changeTaskStatus={changeStatus}
                                     changeTaskTitle={changeTaskTitle}
-                                    filter={tl.filter}
+
                                     removeTodolist={removeTodolist}
                                     changeTodoListTitle={changeTodoListTitle}
                                 />

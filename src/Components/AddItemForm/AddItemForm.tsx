@@ -4,9 +4,10 @@ import {Add, PostAdd} from "@material-ui/icons";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo ((props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo (function ({addItem, disabled = false}: AddItemFormPropsType)  {
     console.log('AddItemForm was called')
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [error, setError] = useState<string | null>(null)
@@ -18,32 +19,29 @@ export const AddItemForm = React.memo ((props: AddItemFormPropsType) => {
             setError(null);
         }
         if (e.charCode === 13) {
-            props.addItem(newTaskTitle);
+            addItem(newTaskTitle);
             setNewTaskTitle('')
         }
     }
     const addTask = () => {
-
         if (newTaskTitle.trim() !== '' && newTaskTitle.trim() !== 'censor') {
 
-            props.addItem(newTaskTitle.trim());
+            addItem(newTaskTitle.trim());
             setNewTaskTitle('');
         } else {
             setError('Title is required');
         }
     }
-
     return <div>
-
         <TextField variant="outlined"
+                   disabled={disabled}
                    label={'Type value'}
                    error={!!error}
                    helperText={error}
                    value={newTaskTitle}
                    onChange={onNewTitleChangeHandler}
                    onKeyPress={onKeyPressHandler}/>
-
-        <IconButton onClick={addTask}  color={"primary"}>
+        <IconButton onClick={addTask}  color={"primary"} disabled={disabled}>
             <PostAdd />
         </IconButton>
 

@@ -1,5 +1,5 @@
 import {TaskStateType} from "../../trash/App";
-import {addTodolistAC, TodolistDomainType, todolistsReduser} from "./todolist-reduser";
+import {addTodolistAC, TodolistDomainType, todolistsReducer} from "./todolist-reduser";
 import {taskReduser} from "./tasks-reduser";
 
 
@@ -14,7 +14,7 @@ test('ids should be equals', ()=>{
         addedDate: ''
     });
     const endTaskState = taskReduser(startTaskState, action);
-    const endTodolistState = todolistsReduser(startTodolistState, action);
+    const endTodolistState = todolistsReducer(startTodolistState, action);
 
     const keys = Object.keys(endTaskState);
     const idFromTask = keys[0];
