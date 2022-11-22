@@ -29,10 +29,11 @@ type PropsType = {
 export const Todolist = React.memo(function (props: PropsType) {
     console.log('Task was called')
 
+
     const dispatch = useAppDispatch();
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(fetchTasksTC(props.todolist.id))
-    },[])
+    }, [])
 
 
     const onAllClickHandler = useCallback(() =>
@@ -42,7 +43,9 @@ export const Todolist = React.memo(function (props: PropsType) {
     const onCompletedClickHandler = useCallback(() =>
         props.changeFilter('Completed', props.todolist.id), [props.changeFilter, props.todolist.id]);
 
-    const removeTodolist = () => {props.removeTodolist(props.todolist.id);};
+    const removeTodolistHandler = () => {
+        props.removeTodolist(props.todolist.id);
+    };
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.todolist.id);
@@ -60,13 +63,15 @@ export const Todolist = React.memo(function (props: PropsType) {
 
     return <div>
         <h3><EditebleSpan title={props.todolist.title} onChange={changeTodoListTitle}/>
-            <IconButton aria-label="delete" onClick={removeTodolist} disabled={props.todolist.entityStatus === 'loading'}>
+            <IconButton aria-label="delete" onClick={removeTodolistHandler}
+                        disabled={props.todolist.entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
         </h3>
         <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === 'loading'}/>
         <div>
             {filteredTasks.map(el => <Task
+                    entityTaskStatus={el.entityTaskStatus}
                     task={el}
                     removeTask={props.removeTask}
                     changeTaskStatus={props.changeTaskStatus}
@@ -77,7 +82,8 @@ export const Todolist = React.memo(function (props: PropsType) {
             )}
         </div>
         <div style={{paddingTop: '10px'}}>
-            <Button variant={props.todolist.filter === 'All' ? "contained" : "text"} onClick={onAllClickHandler}>All</Button>
+            <Button variant={props.todolist.filter === 'All' ? "contained" : "text"}
+                    onClick={onAllClickHandler}>All</Button>
             <Button color={"primary"} variant={props.todolist.filter === 'Active' ? "contained" : "text"}
                     onClick={onActiveClickHandler}>Active
             </Button>

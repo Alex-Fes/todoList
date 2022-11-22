@@ -5,12 +5,12 @@ import {v1} from "uuid";
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
 import {todolistsReducer} from "../features/TodolistList/todolist-reduser";
-import {taskReduser} from "../features/TodolistList/tasks-reduser";
+import {taskReducer} from "../features/TodolistList/tasks-reduser";
 import {appReducer} from "../app/app-reducer";
 
 const rootReducer = combineReducers({
     todolists: todolistsReducer,
-    tasks: taskReduser,
+    tasks: taskReducer,
     app: appReducer
 })
 
@@ -30,35 +30,36 @@ const initialGlobalState: AppRootStateType = {
         ['todolistId1']: [
             {
                 id: '1', title: "HTML", status: TaskStatuses.Completed, todoListId: 'todolistId1',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '', entityTaskStatus: 'idle'
             },
             {
                 id: '2', title: "JS", status: TaskStatuses.Completed, todoListId: 'todolistId1',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '', entityTaskStatus: 'idle'
             },
             {
                 id: '3', title: "ReactJS", status: TaskStatuses.New, todoListId: 'todolistId1',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '', entityTaskStatus: 'idle'
             }
         ],
         ['todolistId2']: [
             {
                 id: '1', title: "Book", status: TaskStatuses.Completed, todoListId: 'todolistId2',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '', entityTaskStatus: 'idle'
             },
             {
                 id: '2', title: "Map", status: TaskStatuses.Completed, todoListId: 'todolistId2',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '', entityTaskStatus: 'idle'
             },
             {
                 id: '3', title: "Pen", status: TaskStatuses.New, todoListId: 'todolistId2',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: ''
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '', entityTaskStatus: 'idle'
             }
         ]
     },
     app: {
         error: null,
-        status: 'idle'
+        status: 'idle',
+        taskStatus: 'idle'
     }
 }
 

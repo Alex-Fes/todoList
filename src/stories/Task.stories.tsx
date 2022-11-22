@@ -13,20 +13,25 @@ const removeTaskCallback = action("Task is remove")
 export const TaskBaseExample = (props: any) => {
     return <>
         <Task
-            task={{id: '1', status: TaskStatuses.Completed, title: 'CSS' , todoListId: 'todolistId1',
-                startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''}}
+            task={{
+                id: '1', status: TaskStatuses.Completed, title: 'CSS', todoListId: 'todolistId1',
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '', entityTaskStatus: 'idle'
+            }}
             removeTask={removeTaskCallback}
             changeTaskStatus={changeTaskStatusCallback}
             changeTaskTitle={changeTaskTitleCallback}
             todolistId={'todolistId1'}
-        />
+            entityTaskStatus={'loading'}/>
         <Task
-            task={{id: '2', status: TaskStatuses.New, title: 'JS', todoListId: 'todolistId1',
-                startDate:'', deadline: '',addedDate:'',order: 0,priority: TaskPriority.Low, description:''}}
+            task={{
+                id: '2', status: TaskStatuses.New, title: 'JS', todoListId: 'todolistId1',
+                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriority.Low, description: '', entityTaskStatus: 'idle'
+            }}
             removeTask={removeTaskCallback}
             changeTaskStatus={changeTaskStatusCallback}
             changeTaskTitle={changeTaskTitleCallback}
             todolistId={'todolistId2'}
+            entityTaskStatus={'loading'}
         />
     </>
 }

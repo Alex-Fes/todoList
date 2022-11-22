@@ -1,6 +1,6 @@
-import {TaskStateType} from "../../trash/App";
+
 import {addTodolistAC, TodolistDomainType, todolistsReducer} from "./todolist-reduser";
-import {taskReduser} from "./tasks-reduser";
+import {taskReducer, TaskStateType} from "./tasks-reduser";
 
 
 test('ids should be equals', ()=>{
@@ -13,7 +13,7 @@ test('ids should be equals', ()=>{
         order: 0,
         addedDate: ''
     });
-    const endTaskState = taskReduser(startTaskState, action);
+    const endTaskState = taskReducer(startTaskState, action);
     const endTodolistState = todolistsReducer(startTodolistState, action);
 
     const keys = Object.keys(endTaskState);
