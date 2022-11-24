@@ -118,6 +118,8 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
                     dispatch(changeTaskEntityStatusAC(taskId, 'succeeded', todolistId))
                 } else {
                     handleServerAppError(res.data, dispatch)
+                    dispatch(setAppStatusAC("succeeded"))
+                    dispatch(changeTaskEntityStatusAC(taskId, 'succeeded', todolistId))
                 }
             })
             .catch(error => handleNetworkAppError(error, dispatch))

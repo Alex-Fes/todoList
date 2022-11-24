@@ -91,6 +91,8 @@ export const changeTodolistTitleTC = (title: string, id: string): AppThunkType =
                 dispatch(changeTodolistEntityStatusAC(id, 'succeeded'))
             } else {
                 handleServerAppError(res.data, dispatch)
+                dispatch(setAppStatusAC('succeeded'))
+                dispatch(changeTodolistEntityStatusAC(id, 'succeeded'))
             }
         })
         .catch(error => handleNetworkAppError(error, dispatch))

@@ -1,6 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button, IconButton, TextField} from "@mui/material";
-import {Add, PostAdd} from "@material-ui/icons";
+import {IconButton, TextField} from "@mui/material";
+import {PostAdd} from "@material-ui/icons";
+import {useAppSelector} from "../../app/hooks/hooks";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -9,6 +10,8 @@ type AddItemFormPropsType = {
 
 export const AddItemForm = React.memo (function ({addItem, disabled = false}: AddItemFormPropsType)  {
     console.log('AddItemForm was called')
+
+
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [error, setError] = useState<string | null>(null)
     const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,10 +28,10 @@ export const AddItemForm = React.memo (function ({addItem, disabled = false}: Ad
     }
     const addTask = () => {
         if (newTaskTitle.trim() !== '' && newTaskTitle.trim() !== 'censor') {
-
             addItem(newTaskTitle.trim());
             setNewTaskTitle('');
-        } else {
+        }
+        else {
             setError('Title is required');
         }
     }
