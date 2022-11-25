@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from "react";
 import {
     addTodolistTC,
-    changeTodolistFilterAC,
+    changeTodolistFilterAC, changeTodolistTitleAC,
     changeTodolistTitleTC,
     fetchTodolistTC,
     filterValueType,
@@ -13,6 +13,7 @@ import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../Components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 import {useAppDispatch, useAppSelector} from "../../app/hooks/hooks";
+import {setAppErrorAC} from "../../app/app-reducer";
 
 type TodolistsListPropsType = {}
 export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
@@ -33,6 +34,10 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
         dispatch(updateTaskTC(taskId, {status}, todolistId));
     }, [dispatch]);
     const changeTaskTitle = useCallback((taskId: string, newTitle: string, todolistId: string) => {
+        if(newTitle.length >= 100) {
+            dispatch(setAppErrorAC('Your Title must be shorter then 100 symbols'))
+            return
+        }
         dispatch(updateTaskTC(taskId, {title: newTitle}, todolistId));
     }, [dispatch]);
     const addTodoList = useCallback((title: string) => {
@@ -45,6 +50,11 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
         dispatch(changeTodolistFilterAC(value, todolistId));
     }, [dispatch]);
     const changeTodoListTitle = useCallback((newTitle: string, id: string) => {
+        if(newTitle.length >= 100) {
+            dispatch(setAppErrorAC('Your Title must be shorter then 100 symbols'))
+            dispatch(changeTodolistTitleAC(newTitle, id))
+            return
+        }
         dispatch(changeTodolistTitleTC(newTitle, id));
     }, [dispatch]);
 

@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
-import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@material-ui/icons";
 import {ErrorSnackBar} from "../Components/ErrorSnackBar/ErrorSnackBar";
 import {TodolistsList} from "../features/TodolistList/TodolistList";
 import {useAppSelector} from "./hooks/hooks";
+
+
 
 function App() {
     const status = useAppSelector(state => state.app.status)
@@ -20,7 +22,7 @@ function App() {
                     </Typography>
                     <Button color='inherit'>Login</Button>
                 </Toolbar>
-                {status ==='loading' && <LinearProgress/>}
+                {status ==='loading' && <LinearProgress />}
                 <ErrorSnackBar/>
             </AppBar>
             <Container fixed>
