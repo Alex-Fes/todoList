@@ -7,7 +7,6 @@ import {AppDispatchType} from "../app/store";
 export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: AppDispatchType) => {
     if (data.messages.length) {
         dispatch(setAppErrorAC(data.messages[0]))
-
     } else {
         dispatch(setAppErrorAC('Some error occurred'))
     }

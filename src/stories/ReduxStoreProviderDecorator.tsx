@@ -59,7 +59,7 @@ const initialGlobalState: AppRootStateType = {
     app: {
         error: null,
         status: 'idle',
-        taskStatus: 'idle'
+
     }
 }
 

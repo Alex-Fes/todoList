@@ -35,7 +35,9 @@ export const Task = React.memo((props: TaskPropsType) => {
                 disabled={props.entityTaskStatus === 'loading'}
             />
             <EditableSpan title={props.task.title}
-                          onChange={onChangeTitleHandler}/>
+                          onChange={onChangeTitleHandler}
+                          disabled={props.entityTaskStatus === 'loading'}
+            />
             <IconButton aria-label="delete" onClick={onRemoveHandler}
                         disabled={props.entityTaskStatus === 'loading'}
             >

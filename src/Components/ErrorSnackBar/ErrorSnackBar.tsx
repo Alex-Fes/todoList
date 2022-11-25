@@ -20,8 +20,7 @@ export function ErrorSnackBar() {
             return;
         }
         dispatch(setAppErrorAC(null))
-    };
-
+    }
 
     return (
             <Snackbar open={error !== null} autoHideDuration={5000} onClose={handleClose}>

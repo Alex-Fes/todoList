@@ -1,4 +1,3 @@
-import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {action} from "@storybook/addon-actions";
 import {EditableSpan} from "./EditableSpan";
 
@@ -10,6 +9,9 @@ const onChangeCallback = action("Value Changed")
 
 export const EditableSpanBaseExample = (props : any) => {
     return <>
-    <EditableSpan title={'Start Title'} onChange={onChangeCallback}/>
+    <EditableSpan title={'Start Title'}
+                  onChange={onChangeCallback}
+                  disabled={true}
+    />
     </>
 }
