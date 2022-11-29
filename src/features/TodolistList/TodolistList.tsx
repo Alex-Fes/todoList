@@ -14,14 +14,19 @@ import {AddItemForm} from "../../Components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 import {useAppDispatch, useAppSelector} from "../../app/hooks/hooks";
 import {setAppErrorAC} from "../../app/app-reducer";
+import {Navigate} from "react-router-dom";
 
 type TodolistsListPropsType = {}
 export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
     const dispatch = useAppDispatch();
     const todolists = useAppSelector(state => state.todolists);
     const tasks1 = useAppSelector(state => state.tasks);
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     useEffect(() => {
+        if(!isLoggedIn) {
+            return;
+        }
         dispatch(fetchTodolistTC())
     }, [])
     const removeTask = useCallback((taskId: string, todolistId: string) => {
@@ -57,6 +62,10 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
         }
         dispatch(changeTodolistTitleTC(newTitle, id));
     }, [dispatch]);
+
+    if(!isLoggedIn) {
+        return <Navigate to={'/login'} />
+    }
 
     return (<>
         <Grid container style={{padding: '10px'}}>
