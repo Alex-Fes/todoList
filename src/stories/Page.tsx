@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react'
 
-import { Header } from './Header';
-import './page.css';
+import { Header } from './Header'
+import './page.css'
 
 type User = {
-  name: string;
-};
+  name: string
+}
 
 export const Page: React.VFC = () => {
-  const [user, setUser] = React.useState<User>();
+  const [user, setUser] = useState<User>()
 
   return (
     <article>
@@ -36,6 +36,7 @@ export const Page: React.VFC = () => {
         <ul>
           <li>
             Use a higher-level connected component. Storybook helps you compose such data from the
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
             "args" of child component stories
           </li>
           <li>
@@ -69,5 +70,5 @@ export const Page: React.VFC = () => {
         </div>
       </section>
     </article>
-  );
-};
+  )
+}
