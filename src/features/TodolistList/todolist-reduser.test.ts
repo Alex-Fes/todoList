@@ -18,6 +18,7 @@ import {
 
 let todolistId1 = v1()
 let todolistId2 = v1()
+
 const initialGlobalState: Array<TodolistDomainType> = [
   {
     id: todolistId1,
@@ -59,7 +60,7 @@ test('correct todolist should be add', () => {
   )
 
   expect(endState.length).toBe(3)
-  expect(endState[0].title).toBe(newTodolistTitle)
+  expect(endState[0].title).toBe(newTodolistTitle.title)
 })
 
 test('correct todolist should change title', () => {
@@ -106,5 +107,5 @@ test('correct entity status of todolist should be change ', () => {
   const endState = todolistsReducer(initialGlobalState, action)
 
   expect(endState[0].entityStatus).toBe('idle')
-  expect(endState[1].entityStatus).toBe('newStatus')
+  expect(endState[1].entityStatus).toBe('loading')
 })
