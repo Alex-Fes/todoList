@@ -1,5 +1,6 @@
+import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { combineReducers } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { v1 } from 'uuid'
 
@@ -130,11 +131,11 @@ const initialGlobalState: AppRootStateType = {
   },
 }
 
-export const storyBookStore = createStore(
-  rootReducer,
-  initialGlobalState,
-  applyMiddleware(thunkMiddleware)
-)
+export const storyBookStore = configureStore({
+  reducer: rootReducer,
+  preloadedState: initialGlobalState,
+  middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware),
+})
 
 export const ReduxStoreProviderDecorator = (story: any) => {
   return <Provider store={store}>{story()}</Provider>
