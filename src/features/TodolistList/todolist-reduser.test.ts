@@ -4,13 +4,13 @@ import { TodolistType } from '../../api/todolists-api'
 import { RequestStatusType } from '../../app/app-reducer'
 
 import {
-  addTodolistAC,
+  addTodolistTC,
   changeTodolistEntityStatusAC,
   changeTodolistFilterAC,
-  changeTodolistTitleAC,
+  changeTodolistTitleTC,
+  fetchTodolistTC,
   filterValueType,
-  removeTodolistAC,
-  setTodolistsAC,
+  removeTodolistTC,
   TodolistActionType,
   TodolistDomainType,
   todolistsReducer,
@@ -41,7 +41,10 @@ const initialGlobalState: Array<TodolistDomainType> = [
 // type initialStateType = ReturnType<typeof initialState>
 
 test('correct todolist should be delete', () => {
-  const endState = todolistsReducer(initialGlobalState, removeTodolistAC({ id: todolistId1 }))
+  const endState = todolistsReducer(
+    initialGlobalState,
+    removeTodolistTC.fulfilled({ todolistId: todolistId1 }, 'requestId', todolistId1)
+  )
 
   expect(endState.length).toBe(1)
   expect(endState[0].id).toBe(todolistId2)
@@ -56,7 +59,7 @@ test('correct todolist should be add', () => {
   }
   const endState = todolistsReducer(
     initialGlobalState,
-    addTodolistAC({ todolist: newTodolistTitle })
+    addTodolistTC.fulfilled({ todolist: newTodolistTitle }, 'requestId', 'New Task')
   )
 
   expect(endState.length).toBe(3)
@@ -65,7 +68,8 @@ test('correct todolist should be add', () => {
 
 test('correct todolist should change title', () => {
   let newTodolistTitle = 'New Task'
-  let action = changeTodolistTitleAC({ title: newTodolistTitle, id: todolistId2 })
+  const payload = { title: newTodolistTitle, id: todolistId2 }
+  let action = changeTodolistTitleTC.fulfilled(payload, 'requestId', payload)
   const endState = todolistsReducer(initialGlobalState, action)
 
   expect(endState.length).toBe(2)
@@ -89,7 +93,7 @@ test('correct filter of todolist should be change ', () => {
 })
 
 test('todolists should be set to state ', () => {
-  const action = setTodolistsAC({ todolists: initialGlobalState })
+  const action = fetchTodolistTC.fulfilled({ todolists: initialGlobalState }, 'requestId')
 
   const endState = todolistsReducer([], action)
 
