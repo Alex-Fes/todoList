@@ -13,7 +13,6 @@ import { Todolist } from './Todolist/Todolist'
 import {
   addTodolistTC,
   changeTodolistFilterAC,
-  changeTodolistTitleAC,
   changeTodolistTitleTC,
   fetchTodolistTC,
   filterValueType,
@@ -35,19 +34,19 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
   }, [])
   const removeTask = useCallback(
     (taskId: string, todolistId: string) => {
-      dispatch(removeTaskTC(taskId, todolistId))
+      dispatch(removeTaskTC({ taskId, todolistId }))
     },
     [dispatch]
   )
   const addTask = useCallback(
     (title: string, todolistId: string) => {
-      dispatch(addTaskTC(title, todolistId))
+      dispatch(addTaskTC({ title, todolistId }))
     },
     [dispatch]
   )
   const changeStatus = useCallback(
     (taskId: string, status: TaskStatuses, todolistId: string) => {
-      dispatch(updateTaskTC(taskId, { status }, todolistId))
+      dispatch(updateTaskTC({ taskId, model: { status }, todolistId }))
     },
     [dispatch]
   )
@@ -58,7 +57,7 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
 
         return
       }
-      dispatch(updateTaskTC(taskId, { title: newTitle }, todolistId))
+      dispatch(updateTaskTC({ taskId, model: { title: newTitle }, todolistId }))
     },
     [dispatch]
   )
@@ -84,11 +83,11 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
     (newTitle: string, id: string) => {
       if (newTitle.length >= 100) {
         dispatch(setAppErrorAC({ error: 'Your Title must be shorter then 100 symbols' }))
-        dispatch(changeTodolistTitleAC({ title: newTitle, id }))
+        dispatch(changeTodolistTitleTC({ title: newTitle, id }))
 
         return
       }
-      dispatch(changeTodolistTitleTC(newTitle, id))
+      dispatch(changeTodolistTitleTC({ title: newTitle, id }))
     },
     [dispatch]
   )
