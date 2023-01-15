@@ -8,7 +8,7 @@ import FormGroup from '@mui/material/FormGroup'
 import FormLabel from '@mui/material/FormLabel'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
-import { useFormik } from 'formik'
+import { FormikHelpers, useFormik } from 'formik'
 import { Navigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks'
@@ -37,8 +37,16 @@ export const Login = () => {
       password: '',
       rememberMe: false,
     },
-    onSubmit: values => {
-      dispatch(loginTC(values))
+    onSubmit: async (values: FormikValuesType, formikHelpers: FormikHelpers<FormikValuesType>) => {
+      const action = await dispatch(loginTC(values))
+
+      if (loginTC.rejected.match(action)) {
+        if (action.payload?.fieldsErrors?.length) {
+          const error = action.payload.fieldsErrors[0]
+
+          formikHelpers.setFieldError(error.field, error.error)
+        }
+      }
     },
   })
 
@@ -95,4 +103,10 @@ export const Login = () => {
       </Grid>
     </Grid>
   )
+}
+
+type FormikValuesType = {
+  email: string
+  password: string
+  rememberMe: boolean
 }
