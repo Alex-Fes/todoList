@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import { authAPI } from '../api/todolists-api'
-import { setIsLoggedInAC } from '../features/Login/auth-reduser'
+import { setIsLoggedInAC } from '../features/Auth/auth-reduser'
 import { handleNetworkAppError } from '../utils/error-utils'
 
 //THUNK=====================================
