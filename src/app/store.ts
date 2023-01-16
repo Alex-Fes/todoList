@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
-import { authReducer, LoginActionType } from '../features/Login/auth-reduser'
+import { authReducer, LoginActionType } from '../features/Auth/auth-reduser'
 import { taskReducer, TasksActionType } from '../features/TodolistList/tasks-reduser'
 import { TodolistActionType, todolistsReducer } from '../features/TodolistList/todolist-reduser'
 
