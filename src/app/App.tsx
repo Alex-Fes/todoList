@@ -15,17 +15,19 @@ import {
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { ErrorSnackBar } from '../Components/ErrorSnackBar/ErrorSnackBar'
-import { logoutTC } from '../features/Login/auth-reduser'
-import { Login } from '../features/Login/Login'
+import { authSelectors } from '../features/Auth'
+import { logoutTC } from '../features/Auth/auth-reduser'
+import { Login } from '../features/Auth/Login'
 import { TodolistsList } from '../features/TodolistList/TodolistList'
 
 import { initializeAppTC } from './app-reducer'
 import { useAppDispatch, useAppSelector } from './hooks/hooks'
+import { selectIsInitialized, selectStatus } from './selectors'
 
 function App() {
-  const status = useAppSelector(state => state.app.status)
-  const isInitialized = useAppSelector(state => state.app.isInitialized)
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const status = useAppSelector(selectStatus)
+  const isInitialized = useAppSelector(selectIsInitialized)
+  const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
