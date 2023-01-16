@@ -7,6 +7,7 @@ import { TaskStatuses } from '../../api/todolists-api'
 import { setAppErrorAC } from '../../app/app-reducer'
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks'
 import { AddItemForm } from '../../Components/AddItemForm/AddItemForm'
+import { selectIsLoggedIn } from '../Auth/selectors'
 
 import { addTaskTC, removeTaskTC, updateTaskTC } from './tasks-reduser'
 import { Todolist } from './Todolist/Todolist'
@@ -24,7 +25,7 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
   const dispatch = useAppDispatch()
   const todolists = useAppSelector(state => state.todolists)
   const tasks1 = useAppSelector(state => state.tasks)
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   useEffect(() => {
     if (!isLoggedIn) {
