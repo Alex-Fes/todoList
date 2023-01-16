@@ -14,10 +14,11 @@ import { Navigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks'
 
 import { loginTC } from './auth-reduser'
+import { selectIsLoggedIn } from './selectors'
 
 export const Login = () => {
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const formik = useFormik({
     validate(values) {
