@@ -1,27 +1,43 @@
-import { Dispatch } from 'redux'
+import { AxiosError } from 'axios'
 
-import { ResponseType } from '../api/todolists-api'
-import { setAppErrorAC, setAppStatusAC } from '../app/app-reducer'
-import { AppDispatchType } from '../app/store'
+import { ResponseType } from '../api/types'
+import { appActions } from '../features/CommonActions/App'
 
-export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatch) => {
-  if (data.messages.length) {
-    dispatch(setAppErrorAC({ error: data.messages[0] }))
-  } else {
-    dispatch(setAppErrorAC({ error: 'Some error occurred' }))
-  }
-  dispatch(setAppStatusAC({ status: 'failed' }))
+// original type:
+// BaseThunkAPI<S, E, D extends Dispatch = Dispatch, RejectedValue = undefined>
+type ThunkAPIType = {
+  dispatch: (action: any) => any
+  rejectWithValue: Function
 }
 
-export const handleNetworkAppError = (error: { message: string }, dispatch: Dispatch) => {
-  dispatch(
-    setAppErrorAC(error.message ? { error: error.message } : { error: 'Some error occurred' })
-  )
-  dispatch(setAppStatusAC({ status: 'failed' }))
+export const handleAsyncServerAppError = <D>(
+  data: ResponseType<D>,
+  thunkAPI: ThunkAPIType,
+  showError = true
+) => {
+  if (showError) {
+    thunkAPI.dispatch(
+      appActions.setAppError({
+        error: data.messages.length ? data.messages[0] : 'Some error occurred',
+      })
+    )
+  }
+  thunkAPI.dispatch(appActions.setAppStatus({ status: 'failed' }))
+
+  return thunkAPI.rejectWithValue({ errors: data.messages, fieldsErrors: data.fieldsErrors })
 }
 
-export const checkLengthTitle = (title: string, dispatch: AppDispatchType) => {
-  if (title.length >= 100) {
-    return dispatch(setAppErrorAC({ error: 'Your title must be short then 100 symbols' }))
+export const handleAsyncServerNetworkError = (
+  error: AxiosError,
+  thunkAPI: ThunkAPIType,
+  showError = true
+) => {
+  if (showError) {
+    thunkAPI.dispatch(
+      appActions.setAppError({ error: error.message ? error.message : 'Some error occurred' })
+    )
   }
+  thunkAPI.dispatch(appActions.setAppStatus({ status: 'failed' }))
+
+  return thunkAPI.rejectWithValue({ errors: [error.message], fieldsErrors: undefined })
 }

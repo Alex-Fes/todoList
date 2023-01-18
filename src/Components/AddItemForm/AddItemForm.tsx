@@ -1,36 +1,39 @@
 import React, { ChangeEvent, KeyboardEvent, memo, useState } from 'react'
 
-import { PostAdd } from '@material-ui/icons'
-import { IconButton, TextField } from '@mui/material'
+import { IconButton, TextField } from '@material-ui/core'
+import { AddBox } from '@material-ui/icons'
 
+export type AddItemFormSubmitHelperType = {
+  setError: (error: string) => void
+  setTitle: (title: string) => void
+}
 type AddItemFormPropsType = {
-  addItem: (title: string) => void
+  addItem: (title: string, helper: AddItemFormSubmitHelperType) => void
   disabled?: boolean
 }
 
 export const AddItemForm = memo(function ({ addItem, disabled = false }: AddItemFormPropsType) {
-  console.log('AddItemForm was called')
+  let [title, setTitle] = useState('')
+  let [error, setError] = useState<string | null>(null)
 
-  const [newTaskTitle, setNewTaskTitle] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value)
+  const addItemHandler = async () => {
+    if (title.trim() !== '') {
+      addItem(title, { setError, setTitle })
+    } else {
+      setError('Title is required')
+    }
   }
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.currentTarget.value)
+  }
+
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (error !== null) {
       setError(null)
     }
     if (e.charCode === 13) {
-      addItem(newTaskTitle)
-      setNewTaskTitle('')
-    }
-  }
-  const addTask = () => {
-    if (newTaskTitle.trim() !== '' && newTaskTitle.trim() !== 'censor') {
-      addItem(newTaskTitle.trim())
-      setNewTaskTitle('')
-    } else {
-      setError('Title is required')
+      addItemHandler()
     }
   }
 
@@ -39,15 +42,20 @@ export const AddItemForm = memo(function ({ addItem, disabled = false }: AddItem
       <TextField
         variant="outlined"
         disabled={disabled}
-        label={'Type value'}
         error={!!error}
-        helperText={error}
-        value={newTaskTitle}
-        onChange={onNewTitleChangeHandler}
+        value={title}
+        onChange={onChangeHandler}
         onKeyPress={onKeyPressHandler}
+        label="Title"
+        helperText={error}
       />
-      <IconButton onClick={addTask} color={'primary'} disabled={disabled}>
-        <PostAdd />
+      <IconButton
+        color="primary"
+        onClick={addItemHandler}
+        disabled={disabled}
+        style={{ marginLeft: '5px' }}
+      >
+        <AddBox />
       </IconButton>
     </div>
   )

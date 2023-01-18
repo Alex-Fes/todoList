@@ -1,97 +1,61 @@
 import React, { useCallback, useEffect } from 'react'
 
-import { Grid, Paper } from '@mui/material'
+import { Grid } from '@material-ui/core'
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
-import { TaskStatuses } from '../../api/todolists-api'
-import { setAppErrorAC } from '../../app/app-reducer'
-import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks'
-import { AddItemForm } from '../../Components/AddItemForm/AddItemForm'
+import { AddItemForm, AddItemFormSubmitHelperType } from '../../Components/AddItemForm/AddItemForm'
+import { useActions, useAppDispatch } from '../../utils/redux-utils'
+import { AppRootStateType } from '../../utils/types'
 import { selectIsLoggedIn } from '../Auth/selectors'
 
-import { addTaskTC, removeTaskTC, updateTaskTC } from './tasks-reduser'
+import { TasksStateType } from './tasks-reduser'
 import { Todolist } from './Todolist/Todolist'
-import {
-  addTodolistTC,
-  changeTodolistFilterAC,
-  changeTodolistTitleTC,
-  fetchTodolistTC,
-  filterValueType,
-  removeTodolistTC,
-} from './todolist-reduser'
+import { TodolistDomainType } from './todolist-reduser'
 
-type TodolistsListPropsType = {}
-export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
+import { todolistsActions } from './index'
+
+type PropsType = {
+  demo?: boolean
+}
+
+export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
+  const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(
+    state => state.todolists
+  )
+  const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
+
   const dispatch = useAppDispatch()
-  const todolists = useAppSelector(state => state.todolists)
-  const tasks1 = useAppSelector(state => state.tasks)
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+  const { fetchTodolistsTC, addTodolistTC } = useActions(todolistsActions)
+
+  const addTodolistCallback = useCallback(
+    async (title: string, helper: AddItemFormSubmitHelperType) => {
+      let thunk = todolistsActions.addTodolistTC(title)
+      const resultAction = await dispatch(thunk)
+
+      if (todolistsActions.addTodolistTC.rejected.match(resultAction)) {
+        if (resultAction.payload?.errors?.length) {
+          const errorMessage = resultAction.payload?.errors[0]
+
+          helper.setError(errorMessage)
+        } else {
+          helper.setError('Some error occured')
+        }
+      } else {
+        helper.setTitle('')
+      }
+    },
+    []
+  )
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (demo || !isLoggedIn) {
       return
     }
-    dispatch(fetchTodolistTC())
+    fetchTodolistsTC()
   }, [])
-  const removeTask = useCallback(
-    (taskId: string, todolistId: string) => {
-      dispatch(removeTaskTC({ taskId, todolistId }))
-    },
-    [dispatch]
-  )
-  const addTask = useCallback(
-    (title: string, todolistId: string) => {
-      dispatch(addTaskTC({ title, todolistId }))
-    },
-    [dispatch]
-  )
-  const changeStatus = useCallback(
-    (taskId: string, status: TaskStatuses, todolistId: string) => {
-      dispatch(updateTaskTC({ taskId, model: { status }, todolistId }))
-    },
-    [dispatch]
-  )
-  const changeTaskTitle = useCallback(
-    (taskId: string, newTitle: string, todolistId: string) => {
-      if (newTitle.length >= 100) {
-        dispatch(setAppErrorAC({ error: 'Your Title must be shorter then 100 symbols' }))
-
-        return
-      }
-      dispatch(updateTaskTC({ taskId, model: { title: newTitle }, todolistId }))
-    },
-    [dispatch]
-  )
-  const addTodoList = useCallback(
-    (title: string) => {
-      dispatch(addTodolistTC(title))
-    },
-    [dispatch]
-  )
-  const removeTodolist = useCallback(
-    (todolistId: string) => {
-      dispatch(removeTodolistTC(todolistId))
-    },
-    [dispatch]
-  )
-  const changeFilter = useCallback(
-    (filter: filterValueType, todolistId: string) => {
-      dispatch(changeTodolistFilterAC({ filter, todolistId }))
-    },
-    [dispatch]
-  )
-  const changeTodoListTitle = useCallback(
-    (newTitle: string, id: string) => {
-      if (newTitle.length >= 100) {
-        dispatch(setAppErrorAC({ error: 'Your Title must be shorter then 100 symbols' }))
-        dispatch(changeTodolistTitleTC({ title: newTitle, id }))
-
-        return
-      }
-      dispatch(changeTodolistTitleTC({ title: newTitle, id }))
-    },
-    [dispatch]
-  )
 
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />
@@ -99,29 +63,18 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = () => {
 
   return (
     <>
-      <Grid container style={{ padding: '10px' }}>
-        <AddItemForm addItem={addTodoList} />
+      <Grid container style={{ padding: '20px' }}>
+        <AddItemForm addItem={addTodolistCallback} />
       </Grid>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={{ flexWrap: 'nowrap', overflowX: 'scroll' }}>
         {todolists.map(tl => {
-          let filteredTasks = tasks1[tl.id]
+          let allTodolistTasks = tasks[tl.id]
 
           return (
             <Grid item key={tl.id}>
-              <Paper style={{ padding: '10px' }}>
-                <Todolist
-                  key={tl.id}
-                  todolist={tl}
-                  tasks={filteredTasks}
-                  removeTask={removeTask}
-                  changeFilter={changeFilter}
-                  addTask={addTask}
-                  changeTaskStatus={changeStatus}
-                  changeTaskTitle={changeTaskTitle}
-                  removeTodolist={removeTodolist}
-                  changeTodoListTitle={changeTodoListTitle}
-                />
-              </Paper>
+              <div style={{ width: '300px' }}>
+                <Todolist todolist={tl} tasks={allTodolistTasks} demo={demo} />
+              </div>
             </Grid>
           )
         })}

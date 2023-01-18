@@ -1,27 +1,39 @@
 import React from 'react'
 
-import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
-import FormControl from '@mui/material/FormControl'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormGroup from '@mui/material/FormGroup'
-import FormLabel from '@mui/material/FormLabel'
-import Grid from '@mui/material/Grid'
-import TextField from '@mui/material/TextField'
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  Grid,
+  TextField,
+} from '@material-ui/core'
 import { FormikHelpers, useFormik } from 'formik'
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks/hooks'
+import { useAppDispatch } from '../../utils/redux-utils'
 
-import { loginTC } from './auth-reduser'
+import { login } from './auth-reduser'
 import { selectIsLoggedIn } from './selectors'
+
+import { authActions } from './index'
+
+type FormValuesType = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
 
 export const Login = () => {
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const formik = useFormik({
-    validate(values) {
+    validate: values => {
       if (!values.email) {
         return {
           email: 'Email is required',
@@ -29,7 +41,7 @@ export const Login = () => {
       }
       if (!values.password) {
         return {
-          email: 'Password is required',
+          password: 'Password is required',
         }
       }
     },
@@ -38,12 +50,12 @@ export const Login = () => {
       password: '',
       rememberMe: false,
     },
-    onSubmit: async (values: FormikValuesType, formikHelpers: FormikHelpers<FormikValuesType>) => {
-      const action = await dispatch(loginTC(values))
+    onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
+      const resultAction = await dispatch(authActions.login(values))
 
-      if (loginTC.rejected.match(action)) {
-        if (action.payload?.fieldsErrors?.length) {
-          const error = action.payload.fieldsErrors[0]
+      if (login.rejected.match(resultAction)) {
+        if (resultAction.payload?.fieldsErrors?.length) {
+          const error = resultAction.payload?.fieldsErrors[0]
 
           formikHelpers.setFieldError(error.field, error.error)
         }
@@ -56,24 +68,23 @@ export const Login = () => {
   }
 
   return (
-    <Grid container justifyContent={'center'}>
-      <Grid item justifyContent={'center'}>
+    <Grid container justify="center">
+      <Grid item xs={4}>
         <form onSubmit={formik.handleSubmit}>
           <FormControl>
             <FormLabel>
               <p>
-                To log in get registered
+                To log in get registered{' '}
                 <a
                   href={'https://social-network.samuraijs.com/'}
                   target={'_blank'}
                   rel="noreferrer"
                 >
-                  {' '}
                   here
                 </a>
               </p>
               <p>or use common test account credentials:</p>
-              <p>Email: free@samuraijs.com</p>
+              <p> Email: free@samuraijs.com</p>
               <p>Password: free</p>
             </FormLabel>
             <FormGroup>
@@ -104,10 +115,4 @@ export const Login = () => {
       </Grid>
     </Grid>
   )
-}
-
-type FormikValuesType = {
-  email: string
-  password: string
-  rememberMe: boolean
 }
