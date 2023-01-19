@@ -28,13 +28,12 @@ const fetchTodolistsTC = createAsyncThunk<{ todolists: TodolistType[] }, undefin
 const removeTodolistTC = createAsyncThunk<{ id: string }, string, ThunkError>(
   'todolists/removeTodolist',
   async (todolistId, { dispatch, rejectWithValue }) => {
-    //изменим глобальный статус приложения, чтобы вверху полоса побежала
     dispatch(setAppStatus({ status: 'loading' }))
-    //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
     dispatch(changeTodolistEntityStatus({ id: todolistId, status: 'loading' }))
-    const res = await todolistsAPI.deleteTodolist(todolistId)
+    await todolistsAPI.deleteTodolist(todolistId)
 
     //скажем глобально приложению, что асинхронная операция завершена
+    dispatch(changeTodolistEntityStatus({ id: todolistId, status: 'succeeded' }))
     dispatch(setAppStatus({ status: 'succeeded' }))
 
     return { id: todolistId }
@@ -62,11 +61,14 @@ const addTodolistTC = createAsyncThunk<{ todolist: TodolistType }, string, Thunk
 const changeTodolistTitleTC = createAsyncThunk(
   'todolists/changeTodolistTitle',
   async (param: { id: string; title: string }, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatus({ status: 'loading' }))
+    thunkAPI.dispatch(changeTodolistEntityStatus({ id: param.id, status: 'loading' }))
     try {
       const res = await todolistsAPI.updateTodolist(param.id, param.title)
 
       if (res.data.resultCode === 0) {
         thunkAPI.dispatch(setAppStatus({ status: 'succeeded' }))
+        thunkAPI.dispatch(changeTodolistEntityStatus({ id: param.id, status: 'succeeded' }))
 
         return { id: param.id, title: param.title }
       } else {
