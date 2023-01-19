@@ -80,9 +80,9 @@ export function App({ demo = false }: PropsType) {
           <Route path={'/login'} element={<Login />} />
           <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>} />
           <Route path="*" element={<Navigate to={'/404'} />} />
+          {/*<Route  path={'/'} element={() => <TodolistsList demo={demo} />} />*/}
+          {/*<Route path={'/login'} element={() => <Login />} />*/}
         </Routes>
-        {/*<Route  path={'/'} render={() => <TodolistsList demo={demo} />} />*/}
-        {/*<Route path={'/login'} render={() => <Login />} />*/}
       </Container>
     </div>
   )
