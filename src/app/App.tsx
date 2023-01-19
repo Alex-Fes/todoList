@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
 
-import './App.css'
 import {
   AppBar,
   Button,
@@ -12,6 +11,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
+import { Box } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
@@ -21,6 +21,8 @@ import { selectIsInitialized, selectStatus } from '../features/Application/selec
 import { authActions, authSelectors, Login } from '../features/Auth'
 import { TodolistsList } from '../features/TodolistList'
 import { useActions } from '../utils/redux-utils'
+
+import s from './App.module.css'
 
 type PropsType = {
   demo?: boolean
@@ -53,22 +55,25 @@ export function App({ demo = false }: PropsType) {
   }
 
   return (
-    <div className="App">
+    <div className={s.mainContainer}>
       <ErrorSnackbar />
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <Menu />
-          </IconButton>
-          <Typography variant="h6">News</Typography>
-          {isLoggedIn && (
-            <Button color="inherit" onClick={logoutHandler}>
-              Log out
-            </Button>
-          )}
-        </Toolbar>
-        {status === 'loading' && <LinearProgress />}
-      </AppBar>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton edge="start" color="inherit" aria-label="menu">
+              <Menu />
+            </IconButton>
+            <Typography variant="h6">Menu</Typography>
+            {isLoggedIn && (
+              <Button color="inherit" onClick={logoutHandler}>
+                Log out
+              </Button>
+            )}
+          </Toolbar>
+          {status === 'loading' && <LinearProgress />}
+        </AppBar>
+      </Box>
+
       <Container fixed>
         <Routes>
           <Route path={'/'} element={<TodolistsList />} />
