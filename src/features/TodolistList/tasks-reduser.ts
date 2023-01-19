@@ -1,13 +1,18 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import { todolistsAPI } from '../../api/todolists-api'
 import { TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType } from '../../api/types'
 import { handleAsyncServerAppError, handleAsyncServerNetworkError } from '../../utils/error-utils'
 import { AppRootStateType, ThunkError } from '../../utils/types'
+import { RequestStatusType } from '../Application'
 import { appActions } from '../CommonActions/App'
 
-import { asyncActions as asyncTodolistsActions } from './todolist-reduser'
+import {
+  asyncActions as asyncTodolistsActions,
+  changeTodolistEntityStatus,
+} from './todolist-reduser'
+const { setAppStatus } = appActions
 
 const initialState: TasksStateType = {}
 
@@ -33,9 +38,31 @@ export const removeTask = createAsyncThunk<
   { taskId: string; todolistId: string },
   ThunkError
 >('tasks/removeTask', async (param, thunkAPI) => {
-  const res = await todolistsAPI.deleteTask(param.todolistId, param.taskId)
+  thunkAPI.dispatch(
+    changeTaskEntityStatus({
+      taskId: param.taskId,
+      status: 'loading',
+      todolistId: param.todolistId,
+    })
+  )
+  thunkAPI.dispatch(setAppStatus({ status: 'loading' }))
 
-  return { taskId: param.taskId, todolistId: param.todolistId }
+  try {
+    await todolistsAPI.deleteTask(param.todolistId, param.taskId)
+
+    thunkAPI.dispatch(setAppStatus({ status: 'succeeded' }))
+    thunkAPI.dispatch(
+      changeTaskEntityStatus({
+        taskId: param.taskId,
+        status: 'succeeded',
+        todolistId: param.todolistId,
+      })
+    )
+
+    return { taskId: param.taskId, todolistId: param.todolistId }
+  } catch (error) {
+    return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
+  }
 })
 export const addTask = createAsyncThunk<
   TaskType,
@@ -43,11 +70,14 @@ export const addTask = createAsyncThunk<
   ThunkError
 >('tasks/addTask', async (param, thunkAPI) => {
   thunkAPI.dispatch(appActions.setAppStatus({ status: 'loading' }))
+  thunkAPI.dispatch(changeTodolistEntityStatus({ id: param.todolistId, status: 'loading' }))
+
   try {
     const res = await todolistsAPI.createTask(param.todolistId, param.title)
 
     if (res.data.resultCode === 0) {
       thunkAPI.dispatch(appActions.setAppStatus({ status: 'succeeded' }))
+      thunkAPI.dispatch(changeTodolistEntityStatus({ id: param.todolistId, status: 'succeeded' }))
 
       return res.data.data.item
     } else {
@@ -110,7 +140,17 @@ export const asyncActions = {
 export const slice = createSlice({
   name: 'tasks',
   initialState,
-  reducers: {},
+  reducers: {
+    changeTaskEntityStatus(
+      state,
+      action: PayloadAction<{ taskId: string; status: RequestStatusType; todolistId: string }>
+    ) {
+      const task = state[action.payload.todolistId]
+      const index = task.findIndex(t => t.id === action.payload.taskId)
+
+      if (index > -1) task[index].entityTaskStatus = action.payload.status
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(asyncTodolistsActions.addTodolistTC.fulfilled, (state, action) => {
@@ -148,6 +188,8 @@ export const slice = createSlice({
       })
   },
 })
+
+export const { changeTaskEntityStatus } = slice.actions
 
 // types
 export type UpdateDomainTaskModelType = {
