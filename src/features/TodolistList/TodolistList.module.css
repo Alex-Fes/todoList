@@ -1,0 +1,18 @@
+.mainContainer {
+    height: 90vh;
+}
+
+.addItem {
+    padding: 20px;
+
+/*background-color: black;*/
+
+}
+
+.allItem {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    height: 80vh;
+}
