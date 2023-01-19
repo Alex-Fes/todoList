@@ -1,3 +1,5 @@
+import { RequestStatusType } from '../features/Application'
+
 export type LoginParamsType = {
   email: string
   password: string
@@ -45,6 +47,7 @@ export type TaskType = {
   todoListId: string
   order: number
   addedDate: string
+  entityTaskStatus: RequestStatusType
 }
 export type UpdateTaskModelType = {
   title: string
