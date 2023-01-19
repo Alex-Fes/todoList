@@ -53,13 +53,19 @@ export const Task = memo((props: TaskPropsType) => {
         checked={props.task.status === TaskStatuses.Completed}
         color="primary"
         onChange={onChangeHandler}
+        disabled={props.task.entityTaskStatus === 'loading'}
       />
 
-      <EditableSpan value={props.task.title} onChange={onTitleChangeHandler} />
+      <EditableSpan
+        disabled={props.task.entityTaskStatus === 'loading'}
+        value={props.task.title}
+        onChange={onTitleChangeHandler}
+      />
       <IconButton
         size={'small'}
         onClick={onClickHandler}
-        style={{ position: 'absolute', top: '2px', right: '2px' }}
+        style={{ position: 'absolute', top: '5px', right: '2px' }}
+        disabled={props.task.entityTaskStatus === 'loading'}
       >
         <Delete fontSize={'small'} />
       </IconButton>
