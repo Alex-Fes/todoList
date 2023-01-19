@@ -52,6 +52,7 @@ const initialGlobalState: AppRootStateType = {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
       {
         id: v1(),
@@ -64,6 +65,7 @@ const initialGlobalState: AppRootStateType = {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
     ],
     ['todolistId2']: [
@@ -78,6 +80,7 @@ const initialGlobalState: AppRootStateType = {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
       {
         id: v1(),
@@ -90,6 +93,7 @@ const initialGlobalState: AppRootStateType = {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
     ],
   },
