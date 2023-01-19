@@ -32,6 +32,7 @@ export const TaskBaseExample = (props: any) => {
           addedDate: '',
           order: 0,
           priority: TaskPriorities.Low,
+          entityTaskStatus: 'idle',
         }}
         todolistId={'todolistId1'}
       />
@@ -47,6 +48,7 @@ export const TaskBaseExample = (props: any) => {
           addedDate: '',
           order: 0,
           priority: TaskPriorities.Low,
+          entityTaskStatus: 'idle',
         }}
         todolistId={'todolistId2'}
       />
