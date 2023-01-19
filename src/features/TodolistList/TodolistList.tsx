@@ -7,11 +7,13 @@ import { Navigate } from 'react-router-dom'
 import { AddItemForm, AddItemFormSubmitHelperType } from '../../Components/AddItemForm/AddItemForm'
 import { useActions, useAppDispatch } from '../../utils/redux-utils'
 import { AppRootStateType } from '../../utils/types'
+import { appSelectors } from '../Application'
 import { selectIsLoggedIn } from '../Auth/selectors'
 
 import { TasksStateType } from './tasks-reduser'
 import { Todolist } from './Todolist/Todolist'
 import { TodolistDomainType } from './todolist-reduser'
+import s from './TodolistList.module.css'
 
 import { todolistsActions } from './index'
 
@@ -25,10 +27,11 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   )
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
   const isLoggedIn = useSelector(selectIsLoggedIn)
+  const appStatus = useSelector(appSelectors.selectStatus)
 
   const dispatch = useAppDispatch()
 
-  const { fetchTodolistsTC, addTodolistTC } = useActions(todolistsActions)
+  const { fetchTodolistsTC } = useActions(todolistsActions)
 
   const addTodolistCallback = useCallback(
     async (title: string, helper: AddItemFormSubmitHelperType) => {
@@ -62,23 +65,27 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   }
 
   return (
-    <>
-      <Grid container style={{ padding: '20px' }}>
-        <AddItemForm addItem={addTodolistCallback} />
-      </Grid>
-      <Grid container spacing={3} style={{ flexWrap: 'nowrap', overflowX: 'scroll' }}>
-        {todolists.map(tl => {
-          let allTodolistTasks = tasks[tl.id]
+    <div className={s.mainContainer}>
+      <div className={s.addItem}>
+        <Grid container>
+          <AddItemForm disabled={appStatus === 'loading'} addItem={addTodolistCallback} />
+        </Grid>
+      </div>
+      <div className={s.allItem}>
+        <Grid container spacing={3} style={{ flexWrap: 'nowrap', overflowX: 'scroll' }}>
+          {todolists.map(tl => {
+            let allTodolistTasks = tasks[tl.id]
 
-          return (
-            <Grid item key={tl.id}>
-              <div style={{ width: '300px' }}>
-                <Todolist todolist={tl} tasks={allTodolistTasks} demo={demo} />
-              </div>
-            </Grid>
-          )
-        })}
-      </Grid>
-    </>
+            return (
+              <Grid item key={tl.id}>
+                <div style={{ width: '300px' }}>
+                  <Todolist todolist={tl} tasks={allTodolistTasks} demo={demo} />
+                </div>
+              </Grid>
+            )
+          })}
+        </Grid>
+      </div>
+    </div>
   )
 }
