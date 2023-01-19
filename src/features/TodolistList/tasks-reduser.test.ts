@@ -1,4 +1,5 @@
 import { TaskPriorities, TaskStatuses } from '../../api/types'
+import { RequestStatusType } from '../Application'
 
 import { asyncActions, slice, TasksStateType } from './tasks-reduser'
 import { asyncActions as todolistsAsyncActions } from './todolist-reduser'
@@ -23,6 +24,7 @@ beforeEach(() => {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
       {
         id: '2',
@@ -35,6 +37,7 @@ beforeEach(() => {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
       {
         id: '3',
@@ -47,6 +50,7 @@ beforeEach(() => {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
     ],
     todolistId2: [
@@ -61,6 +65,7 @@ beforeEach(() => {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
       {
         id: '2',
@@ -73,6 +78,7 @@ beforeEach(() => {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
       {
         id: '3',
@@ -85,6 +91,7 @@ beforeEach(() => {
         addedDate: '',
         order: 0,
         priority: TaskPriorities.Low,
+        entityTaskStatus: 'idle',
       },
     ],
   }
@@ -113,6 +120,7 @@ test('correct task should be added to correct array', () => {
     priority: 0,
     startDate: '',
     id: 'id exists',
+    entityTaskStatus: 'idle' as RequestStatusType,
   }
   const action = addTask.fulfilled(task, 'requestId', {
     title: task.title,
