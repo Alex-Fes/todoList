@@ -110,7 +110,11 @@ export const Todolist = memo(function ({ demo = false, ...props }: PropsType) {
         <Delete fontSize={'small'} />
       </IconButton>
       <h3>
-        <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle} />
+        <EditableSpan
+          disabled={props.todolist.entityStatus === 'loading'}
+          value={props.todolist.title}
+          onChange={changeTodolistTitle}
+        />
       </h3>
       <AddItemForm addItem={addTaskCallback} disabled={props.todolist.entityStatus === 'loading'} />
       <div>
