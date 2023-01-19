@@ -2,6 +2,7 @@ import React, { ChangeEvent, KeyboardEvent, memo, useState } from 'react'
 
 import { IconButton, TextField } from '@material-ui/core'
 import { AddBox } from '@material-ui/icons'
+import { styled } from '@mui/material'
 
 export type AddItemFormSubmitHelperType = {
   setError: (error: string) => void
@@ -37,6 +38,25 @@ export const AddItemForm = memo(function ({ addItem, disabled = false }: AddItem
     }
   }
 
+  const StyledTextField = styled(TextField, {
+    name: 'StyledTextField',
+    // variant: 'outlined',
+    // disabled: disabled,
+    // error: !!error,
+    // value: title,
+    // onChange: onChangeHandler,
+    // onKeyPress: onKeyPressHandler,
+    // label: 'Title',
+    // helperText: error,
+    // color: 'secondary',
+  })({
+    width: 300,
+    '& .MuiInputBase-root': {
+      width: 300,
+      backgroundColor: 'grey',
+    },
+  })
+
   return (
     <div>
       <TextField
@@ -48,7 +68,19 @@ export const AddItemForm = memo(function ({ addItem, disabled = false }: AddItem
         onKeyPress={onKeyPressHandler}
         label="Title"
         helperText={error}
+
+        // sx={{
+        //   width: { sm: 250, md: 350 },
+        //   '& .MuiInputBase-root': {
+        //     height: 100,
+        //   },
+        //   mb: 2,
+        // }}
+
+        // sx={{ width: 300 }}
       />
+      {/*<StyledTextField variant="standard" placeholder="Enter your title" />*/}
+
       <IconButton
         color="primary"
         onClick={addItemHandler}
